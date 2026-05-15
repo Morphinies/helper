@@ -1,0 +1,23 @@
+.root {
+  $root: &;
+
+  display: flex;
+  flex-direction: column;
+  padding: 0 var(--ant-padding-lg);
+
+  #{$root} {
+    &__breadcrumb {
+      margin-top: var(--ant-padding);
+    }
+
+    &__content {
+      flex: 1;
+      min-height: 280;
+      margin: var(--ant-padding) 0;
+      padding: var(--ant-padding-md);
+      background: var(--ant-color-bg-container);
+      border-radius: var(--ant-border-radius-lg);
+      box-shadow: var(--ant-box-shadow-tertiary);
+    }
+  }
+}

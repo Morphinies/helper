@@ -3,13 +3,13 @@ import { Metadata } from "next";
 import { PageWrapper } from "@/widgets/PageWrapper";
 
 export const metadata: Metadata = {
-  title: "Helper - Pulse",
+  title: "Helper - Tasks",
 };
 
-export default function Home() {
+export default function Tasks() {
   return (
     <PageWrapper>
-      <Button type="primary">Home</Button>
+      <Button type="primary">Tasks</Button>
     </PageWrapper>
   );
 }

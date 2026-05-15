@@ -1,0 +1,20 @@
+.root {
+  $root: &;
+  flex: 1;
+
+  #{$root} {
+    &__header {
+      padding: 0 var(--ant-padding-lg);
+      background-color: transparent;
+    }
+
+    &__menu {
+      box-shadow: var(--ant-box-shadow-tertiary);
+      border-radius: 0 0 var(--ant-border-radius-lg) var(--ant-border-radius-lg);
+    }
+
+    &__footer {
+      text-align: center;
+    }
+  }
+}
