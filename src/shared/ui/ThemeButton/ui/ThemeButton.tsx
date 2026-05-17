@@ -3,7 +3,7 @@ import { Component } from "@/shared/types";
 import { MoonOutlined, SunOutlined } from "@ant-design/icons";
 import { useTheme } from "@/app/providers/ThemeProvider";
 
-interface ThemeButtonProps extends Component {}
+type ThemeButtonProps = Component;
 
 export const ThemeButton = ({ className }: ThemeButtonProps) => {
   const { theme, toggleTheme } = useTheme();

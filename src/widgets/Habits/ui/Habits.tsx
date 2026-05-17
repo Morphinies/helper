@@ -1,61 +1,46 @@
 "use client";
 
-import { useState } from "react";
-const { Text, Title } = Typography;
-import { Card, Divider, Flex, Radio, Typography } from "antd";
-
-const views = [
-  {
-    value: "day",
-    label: "Day",
-  },
-  {
-    value: "week",
-    label: "Week",
-  },
-  {
-    value: "month",
-    label: "Month",
-  },
-];
+import s from "./Habits.module.scss";
+import { HabitList } from "./HabitList";
+import { HabitModal } from "./HabitModal";
+import { DailyStats } from "./DailyStats";
+import { HabitsTopbar } from "./HabitsTopbar";
+import { DateNavigation } from "./DateNavigation";
+import { Button, Flex } from "antd";
+import { useHabitsView } from "../model/useHabitsView";
 
 export const Habits = () => {
-  const [view, setView] = useState("day");
+  const {
+    topbar,
+    dateNavigation,
+    habitList,
+    stats,
+    finishEditing,
+    modal,
+  } = useHabitsView();
 
   return (
-    <Flex flex={1} vertical gap={"medium"}>
-      <Flex justify="space-between">
-        <Title level={1}>Habits</Title>
-        <Flex>
-          <Radio.Group
-            value={view}
-            onChange={(e) => setView(e.target.value)}
-            style={{ marginBottom: 16 }}
+    <Flex flex={1} vertical gap="large" className={s["root"]}>
+      <HabitsTopbar {...topbar} />
+
+      <DateNavigation {...dateNavigation} />
+
+      <Flex flex={1} vertical gap="middle">
+        <HabitList {...habitList} />
+
+        <DailyStats {...stats} />
+
+        {finishEditing.visible && (
+          <Button
+            className={s["root__finish-button"]}
+            onClick={finishEditing.onClick}
           >
-            {views.map(({ value, label }) => (
-              <Radio.Button key={label} value={value}>
-                {label}
-              </Radio.Button>
-            ))}
-          </Radio.Group>
-        </Flex>
+            Finish Editing
+          </Button>
+        )}
       </Flex>
 
-      <Flex flex={1} align="center" justify="center">
-        <Flex gap={"middle"} justify="center">
-          {[
-            { id: 1, title: "Английский", description: "Заниматься 1 час" },
-            { id: 2, title: "Спорт", description: "Заниматься 1 час" },
-            { id: 3, title: "Frontend", description: "Заниматься 1 час" },
-          ].map(({ id, title, description }) => (
-            <Card size="medium" key={id} style={{ textAlign: "center" }}>
-              <Title level={4} children={title} />
-              <Divider size="small" />
-              <Text children={description} />
-            </Card>
-          ))}
-        </Flex>
-      </Flex>
+      <HabitModal {...modal} />
     </Flex>
   );
 };

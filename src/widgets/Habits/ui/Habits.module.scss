@@ -1,0 +1,139 @@
+.root {
+  $root: &;
+
+  min-height: 100%;
+
+  #{$root} {
+    &__topbar {
+      @media (max-width: 720px) {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    &__datebar {
+      position: relative;
+    }
+
+    &__datebar-date {
+      width: 82px;
+      font-weight: 600;
+
+      :global(.ant-picker-input) {
+        justify-content: center;
+      }
+
+      :global(.ant-picker-input > input) {
+        text-align: center;
+      }
+    }
+
+    &__habit-grid {
+      display: grid;
+      flex: 1;
+      align-items: flex-start;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    &__habit-card {
+      min-height: 152px;
+      cursor: pointer;
+      border-color: rgba(127, 127, 127, 0.22);
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease,
+        background 0.2s ease;
+
+      &:hover,
+      &:focus-visible {
+        border-color: #4096ff;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+        transform: translateY(-1px);
+      }
+
+      &_completed {
+        background: rgba(82, 196, 26, 0.12);
+
+        #{$root}__habit-card-title {
+          color: inherit;
+          opacity: 0.72;
+          text-decoration: line-through;
+        }
+      }
+
+      &_add {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        :global(.ant-card-body) {
+          display: flex;
+          min-height: 112px;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+      }
+    }
+
+    &__habit-card-title {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    &__habit-card-recurrence {
+      width: fit-content;
+      margin-top: 8px;
+      padding: 2px 8px;
+      border: 1px solid rgba(127, 127, 127, 0.24);
+      border-radius: 999px;
+      font-size: 12px;
+      line-height: 20px;
+    }
+
+    &__habit-card-status {
+      display: inline-flex;
+      width: 28px;
+      height: 28px;
+      flex: 0 0 28px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      color: #52c41a;
+      font-size: 16px;
+    }
+
+    &__habit-card-add-icon {
+      font-size: 28px;
+    }
+
+    &__stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      border-top: 1px solid rgba(127, 127, 127, 0.18);
+    }
+
+    &__finish-button {
+      align-self: center;
+    }
+
+    &__weekday-buttons {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(42px, 1fr));
+      gap: 8px;
+    }
+
+    &__weekday-button {
+      padding-inline: 0;
+    }
+
+  }
+}
