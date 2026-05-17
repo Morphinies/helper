@@ -1,3 +1,88 @@
 .root {
   $root: &;
+
+  #{$root} {
+    &__list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    &__item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: var(--ant-padding-sm) var(--ant-padding);
+      border: 1px solid transparent;
+      border-radius: var(--ant-border-radius);
+      overflow: hidden;
+      cursor: pointer;
+      list-style: none;
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+
+      &:hover,
+      &:focus-visible {
+        border-color: var(--ant-color-primary-border);
+        background: var(--ant-color-fill-tertiary);
+        box-shadow: var(--ant-box-shadow-tertiary);
+      }
+
+      @media (max-width: 720px) {
+        flex-direction: column;
+      }
+    }
+
+    &__main {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    &__checkbox {
+      margin-top: 4px;
+    }
+
+    &__title {
+      margin-bottom: 0;
+      overflow-wrap: anywhere;
+    }
+
+    &__meta {
+      flex: 0 0 auto;
+      margin-left: auto;
+      min-height: 32px;
+
+      @media (max-width: 720px) {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+
+    &__actions {
+      @media (hover: hover) and (pointer: fine) {
+        width: 0;
+        max-width: 0;
+        opacity: 0;
+        overflow: hidden;
+        pointer-events: none;
+        transform: translateX(16px);
+        transition:
+          max-width 0.2s ease,
+          opacity 0.2s ease,
+          transform 0.2s ease;
+      }
+    }
+
+    &__item_actions-visible #{$root}__actions {
+      @media (hover: hover) and (pointer: fine) {
+        width: auto;
+        max-width: 80px;
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(0);
+      }
+    }
+  }
 }

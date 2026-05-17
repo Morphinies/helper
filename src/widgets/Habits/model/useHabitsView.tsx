@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Form, Modal, type MenuProps } from "antd";
+import { App, Form, type MenuProps } from "antd";
 import {
   CheckOutlined,
   DeleteOutlined,
@@ -12,6 +12,7 @@ import type { Habit, HabitFormValues } from "./types";
 
 export function useHabitsView() {
   const [form] = Form.useForm<HabitFormValues>();
+  const { modal: confirmModal } = App.useApp();
   const [view, setView] = useState("day");
   const [editMode, setEditMode] = useState(false);
   const [selectedDate, setSelectedDate] = useState(() =>
@@ -70,7 +71,7 @@ export function useHabitsView() {
   };
 
   const confirmDelete = (habit: Habit) => {
-    Modal.confirm({
+    confirmModal.confirm({
       title: "Delete this habit?",
       okText: "Delete",
       okButtonProps: { danger: true },

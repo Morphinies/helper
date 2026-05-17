@@ -1,6 +1,6 @@
 import themeConfig from "@/styles/themeConfig";
 import React, { useContext, useState } from "react";
-import { ConfigProvider, theme as antdTheme } from "antd";
+import { App, ConfigProvider, theme as antdTheme } from "antd";
 
 export type Theme = "light" | "dark";
 
@@ -31,7 +31,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
               : antdTheme.defaultAlgorithm,
         }}
       >
-        {children}
+        <App
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          {children}
+        </App>
       </ConfigProvider>
     </ThemeContext.Provider>
   );

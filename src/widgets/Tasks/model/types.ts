@@ -11,6 +11,10 @@ export interface Task {
   title: string;
   description?: string;
   status: TaskStatus;
+  deadline?: string;
 }
 
-export type TaskCreate = Pick<Task, "title" | "description">;
+export type TaskFormValues = Pick<
+  Task,
+  "title" | "description" | "status" | "deadline"
+>;

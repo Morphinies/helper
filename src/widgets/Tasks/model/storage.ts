@@ -11,6 +11,7 @@ function isTask(value: unknown): value is Task {
     typeof task.id === "string" &&
     typeof task.title === "string" &&
     (task.description === undefined || typeof task.description === "string") &&
+    (task.deadline === undefined || typeof task.deadline === "string") &&
     typeof task.status === "string"
   );
 }
