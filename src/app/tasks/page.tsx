@@ -1,15 +1,15 @@
-import { Button } from "antd";
 import { Metadata } from "next";
+import { Tasks } from "@/widgets/Tasks";
 import { PageWrapper } from "@/widgets/PageWrapper";
 
 export const metadata: Metadata = {
-  title: "Helper - Tasks",
+  title: "Tasks",
 };
 
-export default function Tasks() {
+export default function TasksPage() {
   return (
     <PageWrapper>
-      <Button type="primary">Tasks</Button>
+      <Tasks />
     </PageWrapper>
   );
 }

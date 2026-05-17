@@ -4,7 +4,7 @@ export const menuItems: UnpreparedMenuItem[] = [
   {
     key: "1",
     href: "/",
-    label: "Pulse",
+    label: "Habits",
   },
   {
     key: "2",

@@ -1,11 +1,12 @@
 "use client";
 
 import s from "./Layout.module.scss";
-import { usePathname } from "next/navigation";
 import { PropsWithChildren } from "react";
-import { Layout as AntdLayout, Menu } from "antd";
-import prepareMenuItems from "@/shared/utils/prepareMenuItems";
 import { menuItems } from "../model/menu";
+import { usePathname } from "next/navigation";
+import { Layout as AntdLayout, Menu } from "antd";
+import { ThemeButton } from "@/shared/ui/ThemeButton";
+import prepareMenuItems from "@/shared/utils/prepareMenuItems";
 
 const { Header } = AntdLayout;
 
@@ -24,6 +25,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
           className={s["root__menu"]}
           selectedKeys={selectedMenuKeys}
         />
+        <ThemeButton className={s["root__theme-button"]} />
       </Header>
       {children}
       {/* <Footer className={s["root__footer"]}>{footerText}</Footer> */}

@@ -4,17 +4,29 @@
 
   #{$root} {
     &__header {
-      padding: 0 var(--ant-padding-lg);
-      background-color: transparent;
+      padding: 0;
+      display: flex;
+      overflow: clip;
+      align-items: center;
+      gap: var(--ant-padding);
+      justify-content: space-between;
+      margin: 0 var(--ant-padding-lg);
+      box-shadow: var(--ant-box-shadow-tertiary);
+      background-color: var(--ant-color-bg-container);
+      border-radius: 0 0 var(--ant-border-radius-lg) var(--ant-border-radius-lg);
     }
 
     &__menu {
-      box-shadow: var(--ant-box-shadow-tertiary);
-      border-radius: 0 0 var(--ant-border-radius-lg) var(--ant-border-radius-lg);
+      flex: 1;
+      border: none;
     }
 
     &__footer {
       text-align: center;
+    }
+
+    &__theme-button {
+      margin: var(--ant-padding);
     }
   }
 }

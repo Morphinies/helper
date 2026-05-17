@@ -6,7 +6,10 @@ import { fontsClass } from "@/styles/fonts";
 import { Layout } from "@/widgets/Layout";
 
 export const metadata: Metadata = {
-  title: "Helper",
+  title: {
+    template: "%s | Helper",
+    default: "Helper",
+  },
   description: "Your assistant in daily routine",
 };
 

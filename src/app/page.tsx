@@ -1,15 +1,15 @@
-import { Button } from "antd";
 import { Metadata } from "next";
+import { Habits } from "@/widgets/Habits";
 import { PageWrapper } from "@/widgets/PageWrapper";
 
 export const metadata: Metadata = {
-  title: "Helper - Pulse",
+  title: "Habits | Helper",
 };
 
-export default function Home() {
+export default function HomePage() {
   return (
     <PageWrapper>
-      <Button type="primary">Home</Button>
+      <Habits />
     </PageWrapper>
   );
 }
