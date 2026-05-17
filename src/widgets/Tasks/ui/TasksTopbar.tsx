@@ -1,19 +1,43 @@
-import { Button, Flex, Typography } from "antd";
+import { Button, Flex, Radio, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import type { TasksViewMode } from "../model/useTasksView";
 
 const { Title } = Typography;
 
 type TasksTopbarProps = {
+  view: TasksViewMode;
+  onViewChange: (value: TasksViewMode) => void;
   onAddTask: () => void;
 };
 
-export function TasksTopbar({ onAddTask }: TasksTopbarProps) {
+const views: { value: TasksViewMode; label: string }[] = [
+  { value: "list", label: "List" },
+  { value: "board", label: "Columns" },
+];
+
+export function TasksTopbar({
+  view,
+  onViewChange,
+  onAddTask,
+}: TasksTopbarProps) {
   return (
     <Flex justify="space-between" align="center">
       <Title level={1}>Tasks</Title>
-      <Button title="Add task" icon={<PlusOutlined />} onClick={onAddTask}>
-        Add
-      </Button>
+      <Flex align="center" gap="small" wrap>
+        <Button title="Add task" icon={<PlusOutlined />} onClick={onAddTask}>
+          Add
+        </Button>
+        <Radio.Group
+          value={view}
+          onChange={(event) => onViewChange(event.target.value)}
+        >
+          {views.map(({ value, label }) => (
+            <Radio.Button key={value} value={value}>
+              {label}
+            </Radio.Button>
+          ))}
+        </Radio.Group>
+      </Flex>
     </Flex>
   );
 }

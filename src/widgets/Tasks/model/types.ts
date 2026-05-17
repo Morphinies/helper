@@ -12,6 +12,7 @@ export interface Task {
   description?: string;
   status: TaskStatus;
   deadline?: string;
+  order: number;
 }
 
 export type TaskFormValues = Pick<

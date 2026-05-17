@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
 import s from "./Tasks.module.scss";
+import { forwardRef, type CSSProperties } from "react";
+import type { DraggableAttributes } from "@dnd-kit/core";
+import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import {
   Button,
   Checkbox,
@@ -27,9 +30,15 @@ type TaskItemProps = {
   onToggleDone: (id: string) => void;
   onEdit: (task: Task) => void;
   onDelete: (task: Task) => void;
+  dragging?: boolean;
+  variant?: "list" | "board";
+  style?: CSSProperties;
+  dragAttributes?: DraggableAttributes;
+  dragListeners?: SyntheticListenerMap;
 };
 
-export function TaskItem({
+export const TaskItem = forwardRef<HTMLLIElement, TaskItemProps>(function TaskItem(
+  {
   task,
   actionsVisible,
   menuItems,
@@ -40,7 +49,16 @@ export function TaskItem({
   onToggleDone,
   onEdit,
   onDelete,
-}: TaskItemProps) {
+  dragging = false,
+  variant = "list",
+  style,
+  dragAttributes,
+  dragListeners,
+  },
+  ref,
+) {
+  const isBoard = variant === "board";
+
   return (
     <Dropdown
       trigger={["contextMenu"]}
@@ -50,11 +68,15 @@ export function TaskItem({
       }}
     >
       <li
+        ref={ref}
         className={`${s["root__item"]} ${
           actionsVisible ? s["root__item_actions-visible"] : ""
-        }`}
+        } ${dragging ? s["root__item_dragging"] : ""}`}
         role="button"
         tabIndex={0}
+        style={style}
+        {...dragAttributes}
+        {...dragListeners}
         onClick={() => onClick(task)}
         onMouseEnter={() => onMouseEnter(task.id)}
         onMouseLeave={onMouseLeave}
@@ -66,31 +88,41 @@ export function TaskItem({
         }}
       >
         <Flex gap="small" align="flex-start" className={s["root__main"]}>
-          <Checkbox
-            className={s["root__checkbox"]}
-            checked={task.status === "done"}
-            onClick={(event) => event.stopPropagation()}
-            onChange={() => onToggleDone(task.id)}
-          />
+          {!isBoard && (
+            <span onPointerDown={(event) => event.stopPropagation()}>
+              <Checkbox
+                className={s["root__checkbox"]}
+                checked={task.status === "done"}
+                onClick={(event) => event.stopPropagation()}
+                onChange={() => onToggleDone(task.id)}
+              />
+            </span>
+          )}
 
           <Flex vertical gap={4}>
             <Title level={4} className={s["root__title"]}>
               {task.title}
             </Title>
             {task.description && <Text>{task.description}</Text>}
+            {isBoard && task.deadline && (
+              <Text type="secondary">
+                {dayjs(task.deadline).format("D MMM YYYY")}
+              </Text>
+            )}
           </Flex>
         </Flex>
 
         <Flex align="center" gap="small" className={s["root__meta"]}>
-          {task.deadline && (
+          {!isBoard && task.deadline && (
             <Text type="secondary">{dayjs(task.deadline).format("D MMM YYYY")}</Text>
           )}
-          <Tag>{statusLabels[task.status]}</Tag>
+          {!isBoard && <Tag>{statusLabels[task.status]}</Tag>}
           <Space.Compact className={s["root__actions"]}>
             <Button
               aria-label="Edit task"
               title="Edit task"
               icon={<EditOutlined />}
+              onPointerDown={(event) => event.stopPropagation()}
               onClick={(event) => {
                 event.stopPropagation();
                 onEdit(task);
@@ -101,6 +133,7 @@ export function TaskItem({
               aria-label="Delete task"
               title="Delete task"
               icon={<DeleteOutlined />}
+              onPointerDown={(event) => event.stopPropagation()}
               onClick={(event) => {
                 event.stopPropagation();
                 onDelete(task);
@@ -111,4 +144,4 @@ export function TaskItem({
       </li>
     </Dropdown>
   );
-}
+});

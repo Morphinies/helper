@@ -22,8 +22,13 @@ export function useTasks() {
   }, [isLoaded, tasks]);
 
   const addTask = (values: TaskFormValues) => {
+    const maxOrder = tasks.reduce(
+      (max, task) => Math.max(max, task.order),
+      0,
+    );
     const newTask: Task = {
       id: crypto.randomUUID(),
+      order: maxOrder + 1000,
       ...values,
     };
 
@@ -50,6 +55,12 @@ export function useTasks() {
     );
   };
 
+  const moveTask = (id: string, status: Task["status"], order: number) => {
+    setTasks((prev) =>
+      prev.map((task) => (task.id === id ? { ...task, status, order } : task)),
+    );
+  };
+
   return {
     tasks,
     addTask,
@@ -57,5 +68,6 @@ export function useTasks() {
     deleteTask,
     isLoaded,
     toggleTaskDone,
+    moveTask,
   };
 }

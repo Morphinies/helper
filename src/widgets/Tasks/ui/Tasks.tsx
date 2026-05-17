@@ -4,11 +4,12 @@ import s from "./Tasks.module.scss";
 import { Flex } from "antd";
 import { TaskList } from "./TaskList";
 import { TaskModal } from "./TaskModal";
+import { TaskBoard } from "./TaskBoard";
 import { TasksTopbar } from "./TasksTopbar";
 import { useTasksView } from "../model/useTasksView";
 
 export const Tasks = () => {
-  const { topbar, taskList, modal } = useTasksView();
+  const { topbar, taskList, taskBoard, modal } = useTasksView();
 
   return (
     <Flex flex={1} vertical gap="medium" className={s["root"]}>
@@ -21,7 +22,11 @@ export const Tasks = () => {
           !taskList.isLoaded || !taskList.tasks.length ? "center" : "flex-start"
         }
       >
-        <TaskList {...taskList} />
+        {topbar.view === "list" ? (
+          <TaskList {...taskList} />
+        ) : (
+          <TaskBoard {...taskBoard} />
+        )}
       </Flex>
 
       <TaskModal {...modal} />

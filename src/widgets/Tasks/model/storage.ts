@@ -12,7 +12,8 @@ function isTask(value: unknown): value is Task {
     typeof task.title === "string" &&
     (task.description === undefined || typeof task.description === "string") &&
     (task.deadline === undefined || typeof task.deadline === "string") &&
-    typeof task.status === "string"
+    typeof task.status === "string" &&
+    (task.order === undefined || typeof task.order === "number")
   );
 }
 
@@ -26,7 +27,12 @@ export function readTasks(): Task[] {
   try {
     const parsedValue: unknown = JSON.parse(value);
 
-    return Array.isArray(parsedValue) ? parsedValue.filter(isTask) : [];
+    return Array.isArray(parsedValue)
+      ? parsedValue.filter(isTask).map((task, index) => ({
+          ...task,
+          order: task.order ?? (index + 1) * 1000,
+        }))
+      : [];
   } catch {
     return [];
   }
