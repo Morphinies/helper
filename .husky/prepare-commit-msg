@@ -1,0 +1,9 @@
+#!/bin/sh
+BRANCH=$(git branch --show-current)
+
+# Игнорируем ветки без префикса (main, master и т.д.)
+case "$BRANCH" in
+  develop|feature/*|fix/*|hotfix/*|release/*)
+    echo "$BRANCH: $(cat $1)" > $1
+    ;;
+esac
