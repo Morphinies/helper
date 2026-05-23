@@ -2,5 +2,11 @@
   "menu": {
     "habits": "Habits",
     "tasks": "Tasks"
+  },
+  "themeButton": {
+    "title": "Switch theme"
+  },
+  "localeSwitcher": {
+    "title": "Switch language"
   }
 }

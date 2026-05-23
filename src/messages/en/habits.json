@@ -1,3 +1,7 @@
 {
-  "title": "Habits"
+  "title": "Habits",
+  "metadata": {
+    "title": "Habits",
+    "description": "Track daily routines and habit progress"
+  }
 }

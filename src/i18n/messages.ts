@@ -29,6 +29,23 @@ export async function getMessages(
   return Object.assign({}, ...messages);
 }
 
+export async function getPageMetadataMessages(
+  locale: string,
+  namespace: Exclude<MessageNamespace, "common">,
+) {
+  const validLocale = getValidLocale(locale);
+  const messages = (
+    await import(`../messages/${validLocale}/${namespace}.json`)
+  ).default as {
+    metadata?: {
+      title?: string;
+      description?: string;
+    };
+  };
+
+  return messages.metadata ?? {};
+}
+
 async function getNamespaceMessages(
   locale: string,
   namespace: MessageNamespace,
