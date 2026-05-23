@@ -3,5 +3,47 @@
   "metadata": {
     "title": "Задачи",
     "description": "Планируйте задачи и управляйте ими по статусам"
-  }
+  },
+  "views": {
+    "list": "Список",
+    "board": "Колонки"
+  },
+  "status": {
+    "todo": "К выполнению",
+    "progress": "В работе",
+    "review": "На проверке",
+    "done": "Готово",
+    "hold": "На паузе",
+    "rejected": "Отклонено"
+  },
+  "actions": {
+    "add": "Добавить",
+    "addTask": "Добавить задачу",
+    "edit": "Изменить",
+    "editTask": "Изменить задачу",
+    "delete": "Удалить",
+    "deleteTask": "Удалить задачу",
+    "cancel": "Отмена",
+    "complete": "Выполнить",
+    "markIncomplete": "Вернуть в работу"
+  },
+  "modal": {
+    "addTitle": "Добавить задачу",
+    "editTitle": "Изменить задачу",
+    "create": "Создать задачу",
+    "save": "Сохранить изменения"
+  },
+  "form": {
+    "title": "Название",
+    "description": "Описание",
+    "status": "Статус",
+    "deadline": "Срок"
+  },
+  "confirm": {
+    "deleteTitle": "Удалить эту задачу?"
+  },
+  "dateFormat": {
+    "deadline": "D MMM YYYY"
+  },
+  "empty": "Задач пока нет"
 }

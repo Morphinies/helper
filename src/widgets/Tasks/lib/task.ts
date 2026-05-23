@@ -1,21 +1,26 @@
 import type { Task, TaskFormValues, TaskStatus } from "../model/types";
 
-export const statusOptions: { value: TaskStatus; label: string }[] = [
-  { value: "todo", label: "Todo" },
-  { value: "progress", label: "In Progress" },
-  { value: "review", label: "Review" },
-  { value: "done", label: "Done" },
-  { value: "hold", label: "On Hold" },
-  { value: "rejected", label: "Rejected" },
+export type Translate = (key: string) => string;
+
+export const statusValues: TaskStatus[] = [
+  "todo",
+  "progress",
+  "review",
+  "done",
+  "hold",
+  "rejected",
 ];
 
-export const statusLabels = statusOptions.reduce<Record<TaskStatus, string>>(
-  (acc, option) => {
-    acc[option.value] = option.label;
-    return acc;
-  },
-  {} as Record<TaskStatus, string>,
-);
+export function getStatusLabel(t: Translate, status: TaskStatus) {
+  return t(`status.${status}`);
+}
+
+export function getStatusOptions(t: Translate) {
+  return statusValues.map((value) => ({
+    value,
+    label: getStatusLabel(t, value),
+  }));
+}
 
 export function getTaskFormValues(task: Task): TaskFormValues {
   return {

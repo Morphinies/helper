@@ -1,5 +1,6 @@
 import s from "./Habits.module.scss";
 import { Card, Typography } from "antd";
+import { useTranslations } from "next-intl";
 import { PlusOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
@@ -9,6 +10,8 @@ type AddHabitCardProps = {
 };
 
 export function AddHabitCard({ onAddHabit }: AddHabitCardProps) {
+  const t = useTranslations("habits");
+
   return (
     <Card
       hoverable
@@ -24,7 +27,7 @@ export function AddHabitCard({ onAddHabit }: AddHabitCardProps) {
       }}
     >
       <PlusOutlined className={s["root__habit-card-add-icon"]} />
-      <Text>Add Habit</Text>
+      <Text>{t("actions.addHabit")}</Text>
     </Card>
   );
 }

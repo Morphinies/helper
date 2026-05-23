@@ -19,8 +19,9 @@ import s from "./Tasks.module.scss";
 import { TaskItem } from "./TaskItem";
 import { SortableTaskItem } from "./SortableTaskItem";
 import type { Task, TaskStatus } from "../model/types";
-import { statusLabels, statusOptions } from "../lib/task";
+import { getStatusLabel, statusValues } from "../lib/task";
 import { Flex, Spin, Typography, type MenuProps } from "antd";
+import { useTranslations } from "next-intl";
 import { useRef, useState, type PropsWithChildren } from "react";
 
 const { Text } = Typography;
@@ -57,6 +58,7 @@ function getStatusFromColumnId(id: UniqueIdentifier) {
 }
 
 function BoardColumn({ status, count, children }: BoardColumnProps) {
+  const t = useTranslations("tasks");
   const { setNodeRef } = useDroppable({
     id: getColumnId(status),
   });
@@ -64,7 +66,7 @@ function BoardColumn({ status, count, children }: BoardColumnProps) {
   return (
     <section ref={setNodeRef} className={s["root__column"]}>
       <Flex justify="space-between" align="center">
-        <Text strong>{statusLabels[status]}</Text>
+        <Text strong>{getStatusLabel(t, status)}</Text>
         <Text type="secondary">{count}</Text>
       </Flex>
       {children}
@@ -228,7 +230,7 @@ export function TaskBoard({
       collisionDetection={pointerWithin}
     >
       <div className={s["root__board"]}>
-        {statusOptions.map(({ value: status }) => {
+        {statusValues.map((status) => {
           const statusTasks = getTasksByStatus(status);
 
           return (

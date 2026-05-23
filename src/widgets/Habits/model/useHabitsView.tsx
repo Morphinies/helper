@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { App, Form, type MenuProps } from "antd";
 import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { toDateInputValue } from "../lib/date";
@@ -7,6 +8,7 @@ import { useHabits } from "./useHabits";
 import type { Habit, HabitFormValues } from "./types";
 
 export function useHabitsView() {
+  const t = useTranslations("habits");
   const [form] = Form.useForm<HabitFormValues>();
   const { modal: confirmModal } = App.useApp();
   const [view, setView] = useState("day");
@@ -68,10 +70,10 @@ export function useHabitsView() {
 
   const confirmDelete = (habit: Habit) => {
     confirmModal.confirm({
-      title: "Delete this habit?",
-      okText: "Delete",
+      title: t("confirm.deleteTitle"),
+      okText: t("actions.delete"),
       okButtonProps: { danger: true },
-      cancelText: "Cancel",
+      cancelText: t("actions.cancel"),
       onOk: () => deleteHabit(habit.id),
     });
   };
@@ -83,13 +85,15 @@ export function useHabitsView() {
       {
         key: "complete",
         icon: <CheckOutlined />,
-        label: isCompleted ? "Mark as Incomplete" : "Complete",
+        label: isCompleted
+          ? t("actions.markIncomplete")
+          : t("actions.complete"),
       },
-      { key: "edit", icon: <EditOutlined />, label: "Edit" },
+      { key: "edit", icon: <EditOutlined />, label: t("actions.edit") },
       {
         key: "delete",
         icon: <DeleteOutlined />,
-        label: "Delete",
+        label: t("actions.delete"),
         danger: true,
       },
     ];

@@ -18,10 +18,3 @@ export function shiftDate(value: string, offset: number) {
 
   return toDateInputValue(date);
 }
-
-export function formatShortDate(value: string) {
-  return new Intl.DateTimeFormat("en", {
-    day: "numeric",
-    month: "short",
-  }).format(fromDateInputValue(value));
-}

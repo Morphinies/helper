@@ -13,9 +13,10 @@ import {
   Typography,
   type MenuProps,
 } from "antd";
+import { useTranslations } from "next-intl";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import type { Task } from "../model/types";
-import { statusLabels } from "../lib/task";
+import { getStatusLabel } from "../lib/task";
 
 const { Text, Title } = Typography;
 
@@ -58,6 +59,8 @@ export const TaskItem = forwardRef<HTMLLIElement, TaskItemProps>(
     },
     ref,
   ) {
+    const t = useTranslations("tasks");
+    const deadlineFormat = t("dateFormat.deadline");
     const isBoard = variant === "board";
 
     return (
@@ -107,7 +110,7 @@ export const TaskItem = forwardRef<HTMLLIElement, TaskItemProps>(
               {task.description && <Text>{task.description}</Text>}
               {isBoard && task.deadline && (
                 <Text type="secondary">
-                  {dayjs(task.deadline).format("D MMM YYYY")}
+                  {dayjs(task.deadline).format(deadlineFormat)}
                 </Text>
               )}
             </Flex>
@@ -116,14 +119,14 @@ export const TaskItem = forwardRef<HTMLLIElement, TaskItemProps>(
           <Flex align="center" gap="small" className={s["root__meta"]}>
             {!isBoard && task.deadline && (
               <Text type="secondary">
-                {dayjs(task.deadline).format("D MMM YYYY")}
+                {dayjs(task.deadline).format(deadlineFormat)}
               </Text>
             )}
-            {!isBoard && <Tag>{statusLabels[task.status]}</Tag>}
+            {!isBoard && <Tag>{getStatusLabel(t, task.status)}</Tag>}
             <Space.Compact className={s["root__actions"]}>
               <Button
-                aria-label="Edit task"
-                title="Edit task"
+                aria-label={t("actions.editTask")}
+                title={t("actions.editTask")}
                 icon={<EditOutlined />}
                 onPointerDown={(event) => event.stopPropagation()}
                 onClick={(event) => {
@@ -133,8 +136,8 @@ export const TaskItem = forwardRef<HTMLLIElement, TaskItemProps>(
               />
               <Button
                 danger
-                aria-label="Delete task"
-                title="Delete task"
+                aria-label={t("actions.deleteTask")}
+                title={t("actions.deleteTask")}
                 icon={<DeleteOutlined />}
                 onPointerDown={(event) => event.stopPropagation()}
                 onClick={(event) => {

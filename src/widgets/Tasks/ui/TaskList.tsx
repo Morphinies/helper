@@ -15,6 +15,7 @@ import {
 } from "@dnd-kit/sortable";
 import { Empty, Spin, type MenuProps } from "antd";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import type { Task } from "../model/types";
 import { SortableTaskItem } from "./SortableTaskItem";
 import { TaskItem } from "./TaskItem";
@@ -48,6 +49,7 @@ export function TaskList({
   onDeleteTask,
   onMoveTask,
 }: TaskListProps) {
+  const t = useTranslations("tasks");
   const [activeTask, setActiveTask] = useState<Task | null>(null);
   const [overlayWidth, setOverlayWidth] = useState<number | undefined>();
   const sensors = useSensors(
@@ -75,7 +77,7 @@ export function TaskList({
 
   if (!isLoaded) return <Spin size="large" />;
 
-  if (!tasks.length) return <Empty description="No tasks yet" />;
+  if (!tasks.length) return <Empty description={t("empty")} />;
 
   return (
     <DndContext

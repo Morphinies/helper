@@ -1,5 +1,6 @@
 import s from "./Habits.module.scss";
 import { Button, Empty, Flex, Spin, Typography, type MenuProps } from "antd";
+import { useTranslations } from "next-intl";
 import type { Habit } from "../model/types";
 import { HabitCard } from "./HabitCard";
 import { AddHabitCard } from "./AddHabitCard";
@@ -29,6 +30,8 @@ export function HabitList({
   onEditHabit,
   onToggleCompletion,
 }: HabitListProps) {
+  const t = useTranslations("habits");
+
   if (!isLoaded) {
     return (
       <Flex flex={1} align="center" justify="center">
@@ -43,13 +46,13 @@ export function HabitList({
         <Empty
           description={
             <Flex vertical gap={4}>
-              <Text>No habits yet</Text>
-              <Text type="secondary">Add your first habit to get started.</Text>
+              <Text>{t("empty.title")}</Text>
+              <Text type="secondary">{t("empty.description")}</Text>
             </Flex>
           }
         >
           <Button type="primary" onClick={onAddHabit}>
-            Add Habit
+            {t("actions.addHabit")}
           </Button>
         </Empty>
       </Flex>

@@ -1,13 +1,14 @@
 import s from "./Habits.module.scss";
 import { Button, Flex, Radio, Typography } from "antd";
+import { useTranslations } from "next-intl";
 import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
 const views = [
-  { value: "day", label: "Day", disabled: false },
-  { value: "week", label: "Week", disabled: true },
-  { value: "month", label: "Month", disabled: true },
+  { value: "day", disabled: false },
+  { value: "week", disabled: true },
+  { value: "month", disabled: true },
 ];
 
 type HabitsTopbarProps = {
@@ -25,6 +26,8 @@ export function HabitsTopbar({
   onEditModeToggle,
   onAddHabit,
 }: HabitsTopbarProps) {
+  const t = useTranslations("habits");
+
   return (
     <Flex
       align="center"
@@ -32,30 +35,30 @@ export function HabitsTopbar({
       gap="middle"
       className={s["root__topbar"]}
     >
-      <Title level={1}>Habits</Title>
+      <Title level={1}>{t("title")}</Title>
       <Flex align="center" gap="small" wrap>
         <Button
           type={editMode ? "primary" : "default"}
           icon={<EditOutlined />}
           onClick={onEditModeToggle}
         >
-          Edit
+          {t("actions.edit")}
         </Button>
         <Button
-          aria-label="Add habit"
-          title="Add habit"
+          aria-label={t("actions.addHabit")}
+          title={t("actions.addHabit")}
           icon={<PlusOutlined />}
           onClick={onAddHabit}
         >
-          Add
+          {t("actions.add")}
         </Button>
         <Radio.Group
           value={view}
           onChange={(event) => onViewChange(event.target.value)}
         >
-          {views.map(({ value, label, disabled }) => (
+          {views.map(({ value, disabled }) => (
             <Radio.Button key={value} value={value} disabled={disabled}>
-              {label}
+              {t(`views.${value}`)}
             </Radio.Button>
           ))}
         </Radio.Group>

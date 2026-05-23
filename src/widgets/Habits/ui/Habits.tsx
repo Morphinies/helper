@@ -7,9 +7,11 @@ import { DailyStats } from "./DailyStats";
 import { HabitsTopbar } from "./HabitsTopbar";
 import { DateNavigation } from "./DateNavigation";
 import { Button, Flex } from "antd";
+import { useTranslations } from "next-intl";
 import { useHabitsView } from "../model/useHabitsView";
 
 export const Habits = () => {
+  const t = useTranslations("habits");
   const { topbar, dateNavigation, habitList, stats, finishEditing, modal } =
     useHabitsView();
 
@@ -29,7 +31,7 @@ export const Habits = () => {
             className={s["root__finish-button"]}
             onClick={finishEditing.onClick}
           >
-            Finish Editing
+            {t("actions.finishEditing")}
           </Button>
         )}
       </Flex>

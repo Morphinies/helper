@@ -8,7 +8,8 @@ import {
 } from "antd";
 import s from "./Tasks.module.scss";
 import dayjs, { type Dayjs } from "dayjs";
-import { statusOptions } from "../lib/task";
+import { useTranslations } from "next-intl";
+import { getStatusOptions } from "../lib/task";
 import type { Task, TaskFormValues } from "../model/types";
 
 type TaskModalProps = {
@@ -28,12 +29,14 @@ export function TaskModal({
   onSubmit,
   onAfterOpenChange,
 }: TaskModalProps) {
+  const t = useTranslations("tasks");
+
   return (
     <Modal
       open={open}
       destroyOnHidden
-      title={task ? "Edit Task" : "Add Task"}
-      okText={task ? "Save Changes" : "Create Task"}
+      title={task ? t("modal.editTitle") : t("modal.addTitle")}
+      okText={task ? t("modal.save") : t("modal.create")}
       onCancel={onClose}
       onOk={() => form.submit()}
       afterOpenChange={onAfterOpenChange}
@@ -46,18 +49,18 @@ export function TaskModal({
         className={s["root__form"]}
         initialValues={{ status: "todo" }}
       >
-        <Form.Item name="title" label="Title" rules={[{ required: true }]}>
+        <Form.Item name="title" label={t("form.title")} rules={[{ required: true }]}>
           <Input autoComplete="off" />
         </Form.Item>
-        <Form.Item name="description" label="Description">
+        <Form.Item name="description" label={t("form.description")}>
           <Input.TextArea autoComplete="off" />
         </Form.Item>
-        <Form.Item name="status" label="Status" rules={[{ required: true }]}>
-          <Select options={statusOptions} />
+        <Form.Item name="status" label={t("form.status")} rules={[{ required: true }]}>
+          <Select options={getStatusOptions(t)} />
         </Form.Item>
         <Form.Item
           name="deadline"
-          label="Deadline"
+          label={t("form.deadline")}
           getValueProps={(value?: string) => ({
             value: value ? dayjs(value) : undefined,
           })}

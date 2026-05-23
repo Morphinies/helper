@@ -3,5 +3,47 @@
   "metadata": {
     "title": "Tasks",
     "description": "Plan and manage tasks by status"
-  }
+  },
+  "views": {
+    "list": "List",
+    "board": "Columns"
+  },
+  "status": {
+    "todo": "Todo",
+    "progress": "In Progress",
+    "review": "Review",
+    "done": "Done",
+    "hold": "On Hold",
+    "rejected": "Rejected"
+  },
+  "actions": {
+    "add": "Add",
+    "addTask": "Add task",
+    "edit": "Edit",
+    "editTask": "Edit task",
+    "delete": "Delete",
+    "deleteTask": "Delete task",
+    "cancel": "Cancel",
+    "complete": "Complete",
+    "markIncomplete": "Mark as Incomplete"
+  },
+  "modal": {
+    "addTitle": "Add Task",
+    "editTitle": "Edit Task",
+    "create": "Create Task",
+    "save": "Save Changes"
+  },
+  "form": {
+    "title": "Title",
+    "description": "Description",
+    "status": "Status",
+    "deadline": "Deadline"
+  },
+  "confirm": {
+    "deleteTitle": "Delete this task?"
+  },
+  "dateFormat": {
+    "deadline": "D MMM YYYY"
+  },
+  "empty": "No tasks yet"
 }

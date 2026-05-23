@@ -1,5 +1,6 @@
 import s from "./Habits.module.scss";
 import { Card, Dropdown, Flex, Typography, type MenuProps } from "antd";
+import { useTranslations } from "next-intl";
 import { CheckOutlined } from "@ant-design/icons";
 import type { Habit } from "../model/types";
 import { getRecurrenceLabel } from "../lib/habit";
@@ -25,6 +26,7 @@ export function HabitCard({
   onEdit,
   onToggleCompletion,
 }: HabitCardProps) {
+  const t = useTranslations("habits");
   const handleAction = () => {
     if (editMode) {
       onEdit(habit);
@@ -66,7 +68,7 @@ export function HabitCard({
               <Text type="secondary">{habit.description}</Text>
             )}
             <Text className={s["root__habit-card-recurrence"]}>
-              {getRecurrenceLabel(habit)}
+              {getRecurrenceLabel(habit, t)}
             </Text>
           </Flex>
           <span className={s["root__habit-card-status"]}>

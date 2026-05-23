@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import { App, Form, type MenuProps } from "antd";
 import {
   CheckOutlined,
@@ -24,6 +25,7 @@ function getAverageOrder(prev?: Task, next?: Task) {
 }
 
 export function useTasksView() {
+  const t = useTranslations("tasks");
   const [form] = Form.useForm<TaskFormValues>();
   const { modal: confirmModal } = App.useApp();
   const [view, setView] = useState<TasksViewMode>("list");
@@ -80,10 +82,10 @@ export function useTasksView() {
 
   const confirmDelete = (task: Task) => {
     confirmModal.confirm({
-      title: "Delete this task?",
-      okText: "Delete",
+      title: t("confirm.deleteTitle"),
+      okText: t("actions.delete"),
       okButtonProps: { danger: true },
-      cancelText: "Cancel",
+      cancelText: t("actions.cancel"),
       onOk: () => deleteTask(task.id),
     });
   };
@@ -95,10 +97,15 @@ export function useTasksView() {
       {
         key: "complete",
         icon: <CheckOutlined />,
-        label: isDone ? "Mark as Incomplete" : "Complete",
+        label: isDone ? t("actions.markIncomplete") : t("actions.complete"),
       },
-      { key: "edit", icon: <EditOutlined />, label: "Edit" },
-      { key: "delete", icon: <DeleteOutlined />, label: "Delete", danger: true },
+      { key: "edit", icon: <EditOutlined />, label: t("actions.edit") },
+      {
+        key: "delete",
+        icon: <DeleteOutlined />,
+        label: t("actions.delete"),
+        danger: true,
+      },
     ];
   };
 

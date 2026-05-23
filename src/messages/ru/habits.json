@@ -3,5 +3,71 @@
   "metadata": {
     "title": "Привычки",
     "description": "Отслеживайте ежедневные привычки и прогресс"
+  },
+  "views": {
+    "day": "День",
+    "week": "Неделя",
+    "month": "Месяц"
+  },
+  "actions": {
+    "add": "Добавить",
+    "addHabit": "Добавить привычку",
+    "edit": "Изменить",
+    "delete": "Удалить",
+    "cancel": "Отмена",
+    "complete": "Выполнить",
+    "finishEditing": "Завершить редактирование",
+    "markIncomplete": "Отметить невыполненной"
+  },
+  "modal": {
+    "addTitle": "Добавить привычку",
+    "editTitle": "Изменить привычку",
+    "create": "Создать привычку",
+    "save": "Сохранить изменения"
+  },
+  "form": {
+    "title": "Название",
+    "description": "Описание",
+    "recurrence": "Повторение",
+    "interval": "Интервал",
+    "intervalExtra": "Каждые 2 дня",
+    "daysOfWeek": "Дни недели",
+    "startDate": "Дата начала",
+    "selectAtLeastOneDay": "Выберите хотя бы один день"
+  },
+  "recurrence": {
+    "daily": "Ежедневно",
+    "every_n_days": "Каждые N дней",
+    "everyNDaysValue": "Каждые {count} дн.",
+    "weekly": "Еженедельно",
+    "custom_weekdays": "Выбранные дни"
+  },
+  "weekdays": {
+    "mon": "Пн",
+    "tue": "Вт",
+    "wed": "Ср",
+    "thu": "Чт",
+    "fri": "Пт",
+    "sat": "Сб",
+    "sun": "Вс"
+  },
+  "stats": {
+    "empty": "На этот день привычек нет",
+    "completed": "Выполнено {completedCount} из {totalCount}",
+    "percentDone": "{percent}% выполнено"
+  },
+  "empty": {
+    "title": "Привычек пока нет",
+    "description": "Добавьте первую привычку, чтобы начать."
+  },
+  "confirm": {
+    "deleteTitle": "Удалить эту привычку?"
+  },
+  "dateNavigation": {
+    "previousDay": "Предыдущий день",
+    "nextDay": "Следующий день"
+  },
+  "dateFormat": {
+    "short": "D MMM"
   }
 }

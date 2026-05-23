@@ -3,5 +3,71 @@
   "metadata": {
     "title": "Habits",
     "description": "Track daily routines and habit progress"
+  },
+  "views": {
+    "day": "Day",
+    "week": "Week",
+    "month": "Month"
+  },
+  "actions": {
+    "add": "Add",
+    "addHabit": "Add Habit",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "complete": "Complete",
+    "finishEditing": "Finish Editing",
+    "markIncomplete": "Mark as Incomplete"
+  },
+  "modal": {
+    "addTitle": "Add Habit",
+    "editTitle": "Edit Habit",
+    "create": "Create Habit",
+    "save": "Save Changes"
+  },
+  "form": {
+    "title": "Title",
+    "description": "Description",
+    "recurrence": "Recurrence",
+    "interval": "Interval",
+    "intervalExtra": "Every 2 days",
+    "daysOfWeek": "Days of Week",
+    "startDate": "Start Date",
+    "selectAtLeastOneDay": "Select at least one day"
+  },
+  "recurrence": {
+    "daily": "Daily",
+    "every_n_days": "Every N Days",
+    "everyNDaysValue": "Every {count} days",
+    "weekly": "Weekly",
+    "custom_weekdays": "Specific Days"
+  },
+  "weekdays": {
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "sun": "Sun"
+  },
+  "stats": {
+    "empty": "No habits for this day",
+    "completed": "Completed {completedCount} of {totalCount} habits",
+    "percentDone": "{percent}% done"
+  },
+  "empty": {
+    "title": "No habits yet",
+    "description": "Add your first habit to get started."
+  },
+  "confirm": {
+    "deleteTitle": "Delete this habit?"
+  },
+  "dateNavigation": {
+    "previousDay": "Previous day",
+    "nextDay": "Next day"
+  },
+  "dateFormat": {
+    "short": "D MMM"
   }
 }

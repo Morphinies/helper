@@ -1,17 +1,30 @@
 import type { Habit, HabitFormValues } from "../model/types";
 
-export function getRecurrenceLabel(habit: Habit) {
-  if (habit.recurrence === "daily") return "Daily";
-  if (habit.recurrence === "weekly") return "Weekly";
+export type Translate = (
+  key: string,
+  values?: Record<string, string | number>,
+) => string;
+
+export function getRecurrenceLabel(habit: Habit, t: Translate) {
+  if (habit.recurrence === "daily") return t("recurrence.daily");
+  if (habit.recurrence === "weekly") return t("recurrence.weekly");
   if (habit.recurrence === "custom_weekdays") {
-    const labels = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const labels = [
+      t("weekdays.sun"),
+      t("weekdays.mon"),
+      t("weekdays.tue"),
+      t("weekdays.wed"),
+      t("weekdays.thu"),
+      t("weekdays.fri"),
+      t("weekdays.sat"),
+    ];
 
     return habit.daysOfWeek?.length
       ? habit.daysOfWeek.map((day) => labels[day]).join(", ")
-      : "Specific Days";
+      : t("recurrence.custom_weekdays");
   }
 
-  return `Every ${habit.interval || 1} days`;
+  return t("recurrence.everyNDaysValue", { count: habit.interval || 1 });
 }
 
 export function getFormValues(habit: Habit): HabitFormValues {

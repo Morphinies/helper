@@ -1,6 +1,7 @@
 import s from "./Habits.module.scss";
 import dayjs from "dayjs";
 import { Button, DatePicker, Flex } from "antd";
+import { useTranslations } from "next-intl";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { shiftDate } from "../lib/date";
 
@@ -13,6 +14,8 @@ export function DateNavigation({
   selectedDate,
   onDateChange,
 }: DateNavigationProps) {
+  const t = useTranslations("habits");
+
   return (
     <Flex
       align="center"
@@ -21,14 +24,14 @@ export function DateNavigation({
       className={s["root__datebar"]}
     >
       <Button
-        aria-label="Previous day"
+        aria-label={t("dateNavigation.previousDay")}
         icon={<LeftOutlined />}
         onClick={() => onDateChange(shiftDate(selectedDate, -1))}
       />
       <DatePicker
         allowClear={false}
         className={s["root__datebar-date"]}
-        format="D MMM"
+        format={t("dateFormat.short")}
         inputReadOnly
         suffixIcon={null}
         value={dayjs(selectedDate)}
@@ -37,7 +40,7 @@ export function DateNavigation({
         }}
       />
       <Button
-        aria-label="Next day"
+        aria-label={t("dateNavigation.nextDay")}
         icon={<RightOutlined />}
         onClick={() => onDateChange(shiftDate(selectedDate, 1))}
       />
