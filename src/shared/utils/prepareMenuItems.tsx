@@ -1,7 +1,11 @@
 import { MenuProps } from "antd";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
-export type UnpreparedMenuItem = { key: string; label: string; href: string };
+export type UnpreparedMenuItem = {
+  key: string;
+  href: string;
+  labelKey: string;
+};
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -12,11 +16,12 @@ export type PreparedMenuItem = MenuItem & {
 function prepareMenuItems(
   items: UnpreparedMenuItem[],
   pathname: string,
+  getLabel: (key: string) => string,
 ): { items: PreparedMenuItem[]; selectedKeys: string[] } {
   const preparedItems: PreparedMenuItem[] = [];
   const selectedKeys = getSelectedMenuKeys(items, pathname);
 
-  for (const { key, href, label } of items) {
+  for (const { key, href, labelKey } of items) {
     const isActiveItem = selectedKeys.includes(key);
 
     preparedItems.push({
@@ -24,7 +29,7 @@ function prepareMenuItems(
       href,
       label: (
         <Link href={href} aria-current={isActiveItem ? "page" : undefined}>
-          {label}
+          {getLabel(labelKey)}
         </Link>
       ),
     });

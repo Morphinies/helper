@@ -1,5 +1,5 @@
-import { Button, Flex, Radio, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
+import { Button, Flex, Radio, Typography } from "antd";
 import type { TasksViewMode } from "../model/useTasksView";
 
 const { Title } = Typography;

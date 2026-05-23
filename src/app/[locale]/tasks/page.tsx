@@ -6,9 +6,15 @@ export const metadata: Metadata = {
   title: "Tasks",
 };
 
-export default function TasksPage() {
+export default async function TasksPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
   return (
-    <PageWrapper>
+    <PageWrapper locale={locale} messagesKey="tasks">
       <Tasks />
     </PageWrapper>
   );

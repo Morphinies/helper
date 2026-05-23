@@ -3,7 +3,8 @@
 import s from "./Layout.module.scss";
 import { PropsWithChildren } from "react";
 import { menuItems } from "../model/menu";
-import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { usePathname } from "@/i18n/navigation";
 import { Layout as AntdLayout, Menu } from "antd";
 import { ThemeButton } from "@/shared/ui/ThemeButton";
 import prepareMenuItems from "@/shared/utils/prepareMenuItems";
@@ -11,9 +12,10 @@ import prepareMenuItems from "@/shared/utils/prepareMenuItems";
 const { Header } = AntdLayout;
 
 export const Layout = ({ children }: PropsWithChildren) => {
+  const t = useTranslations("menu");
   const pathname = usePathname();
   const { items: preparedMenuItems, selectedKeys: selectedMenuKeys } =
-    prepareMenuItems(menuItems, pathname);
+    prepareMenuItems(menuItems, pathname, t);
 
   return (
     <AntdLayout className={s["root"]}>

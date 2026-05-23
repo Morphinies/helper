@@ -1,30 +1,26 @@
-"use client";
-
-import s from "./PageWrapper.module.scss";
 import { PropsWithChildren } from "react";
-import {
-  Breadcrumb,
-  Layout as AntdLayout,
-  type BreadcrumbProps,
-  Flex,
-} from "antd";
-
-const { Content } = AntdLayout;
+import { type BreadcrumbProps } from "antd";
+import PageWrapperClient from "./PageWrapperClient";
+import { getMessages, MessageNamespace } from "@/i18n/messages";
+import { IntlMessagesProvider } from "@/app/providers/IntlMessagesProvider";
 
 export interface PageWrapperProps extends PropsWithChildren {
+  locale: string;
   breadcrumbs?: BreadcrumbProps["items"];
+  messagesKey?: MessageNamespace | MessageNamespace[];
 }
 
-export const PageWrapper = ({ children, breadcrumbs }: PageWrapperProps) => {
+export const PageWrapper = async ({
+  locale,
+  messagesKey,
+  ...props
+}: PageWrapperProps) => {
+  const messages = await getMessages(locale, messagesKey);
+
   return (
-    <Content className={s["root"]}>
-      {!!breadcrumbs?.length && (
-        <Breadcrumb className={s["root__breadcrumb"]} items={breadcrumbs} />
-      )}
-      <Flex vertical className={s["root__content"]}>
-        {children}
-      </Flex>
-    </Content>
+    <IntlMessagesProvider messages={messages}>
+      <PageWrapperClient {...props} />
+    </IntlMessagesProvider>
   );
 };
 

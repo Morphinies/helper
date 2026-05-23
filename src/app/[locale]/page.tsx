@@ -6,9 +6,15 @@ export const metadata: Metadata = {
   title: "Habits | Helper",
 };
 
-export default function HomePage() {
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
   return (
-    <PageWrapper>
+    <PageWrapper locale={locale} messagesKey={"habits"}>
       <Habits />
     </PageWrapper>
   );
