@@ -1,22 +1,22 @@
-import dayjs, { type Dayjs } from "dayjs";
-import s from "./Tasks.module.scss";
 import {
-  DatePicker,
   Form,
   Input,
   Modal,
   Select,
+  DatePicker,
   type FormInstance,
 } from "antd";
-import type { Task, TaskFormValues } from "../model/types";
+import s from "./Tasks.module.scss";
+import dayjs, { type Dayjs } from "dayjs";
 import { statusOptions } from "../lib/task";
+import type { Task, TaskFormValues } from "../model/types";
 
 type TaskModalProps = {
-  form: FormInstance<TaskFormValues>;
-  task: Task | null;
   open: boolean;
-  onSubmit: (values: TaskFormValues) => void;
+  task: Task | null;
+  form: FormInstance<TaskFormValues>;
   onClose: () => void;
+  onSubmit: (values: TaskFormValues) => void;
   onAfterOpenChange: (open: boolean) => void;
 };
 
@@ -24,19 +24,19 @@ export function TaskModal({
   form,
   task,
   open,
-  onSubmit,
   onClose,
+  onSubmit,
   onAfterOpenChange,
 }: TaskModalProps) {
   return (
     <Modal
       open={open}
+      destroyOnHidden
       title={task ? "Edit Task" : "Add Task"}
       okText={task ? "Save Changes" : "Create Task"}
-      onOk={() => form.submit()}
       onCancel={onClose}
+      onOk={() => form.submit()}
       afterOpenChange={onAfterOpenChange}
-      destroyOnHidden
     >
       <Form
         form={form}

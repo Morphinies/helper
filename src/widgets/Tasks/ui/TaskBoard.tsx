@@ -1,12 +1,11 @@
-import s from "./Tasks.module.scss";
 import {
-  DndContext,
-  DragOverlay,
-  PointerSensor,
-  pointerWithin,
-  useDroppable,
   useSensor,
   useSensors,
+  DndContext,
+  DragOverlay,
+  useDroppable,
+  PointerSensor,
+  pointerWithin,
   type DragEndEvent,
   type DragOverEvent,
   type DragStartEvent,
@@ -16,12 +15,13 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Flex, Spin, Typography, type MenuProps } from "antd";
-import { useRef, useState, type PropsWithChildren } from "react";
+import s from "./Tasks.module.scss";
+import { TaskItem } from "./TaskItem";
+import { SortableTaskItem } from "./SortableTaskItem";
 import type { Task, TaskStatus } from "../model/types";
 import { statusLabels, statusOptions } from "../lib/task";
-import { SortableTaskItem } from "./SortableTaskItem";
-import { TaskItem } from "./TaskItem";
+import { Flex, Spin, Typography, type MenuProps } from "antd";
+import { useRef, useState, type PropsWithChildren } from "react";
 
 const { Text } = Typography;
 
@@ -30,18 +30,18 @@ const COLUMN_PREFIX = "column:";
 type TaskBoardProps = {
   tasks: Task[];
   isLoaded: boolean;
+  onEditTask: (task: Task) => void;
+  onTaskClick: (task: Task) => void;
+  onDeleteTask: (task: Task) => void;
+  onToggleTaskDone: (id: string) => void;
+  onMoveTask: (taskId: string, status: TaskStatus, index: number) => void;
   getMenuItems: (task: Task) => MenuProps["items"];
   getMenuClick: (task: Task) => MenuProps["onClick"];
-  onTaskClick: (task: Task) => void;
-  onToggleTaskDone: (id: string) => void;
-  onEditTask: (task: Task) => void;
-  onDeleteTask: (task: Task) => void;
-  onMoveTask: (taskId: string, status: TaskStatus, index: number) => void;
 };
 
 type BoardColumnProps = PropsWithChildren<{
-  status: TaskStatus;
   count: number;
+  status: TaskStatus;
 }>;
 
 function getColumnId(status: TaskStatus) {
@@ -112,13 +112,13 @@ function moveTaskPreview(
 export function TaskBoard({
   tasks,
   isLoaded,
-  getMenuItems,
-  getMenuClick,
-  onTaskClick,
-  onToggleTaskDone,
   onEditTask,
-  onDeleteTask,
   onMoveTask,
+  onTaskClick,
+  getMenuClick,
+  getMenuItems,
+  onDeleteTask,
+  onToggleTaskDone,
 }: TaskBoardProps) {
   const [previewTasks, setPreviewTasks] = useState(tasks);
   const [activeTask, setActiveTask] = useState<Task | null>(null);
@@ -221,11 +221,11 @@ export function TaskBoard({
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={pointerWithin}
-      onDragStart={onDragStart}
-      onDragOver={onDragOver}
       onDragEnd={onDragEnd}
+      onDragOver={onDragOver}
+      onDragStart={onDragStart}
       onDragCancel={onDragCancel}
+      collisionDetection={pointerWithin}
     >
       <div className={s["root__board"]}>
         {statusOptions.map(({ value: status }) => {
@@ -243,15 +243,15 @@ export function TaskBoard({
                       key={task.id}
                       task={task}
                       variant="board"
-                      actionsVisible={false}
-                      menuItems={getMenuItems(task)}
-                      onMenuClick={getMenuClick(task)}
+                      onEdit={onEditTask}
                       onClick={onTaskClick}
+                      actionsVisible={false}
+                      onDelete={onDeleteTask}
+                      menuItems={getMenuItems(task)}
                       onMouseEnter={() => undefined}
                       onMouseLeave={() => undefined}
                       onToggleDone={onToggleTaskDone}
-                      onEdit={onEditTask}
-                      onDelete={onDeleteTask}
+                      onMenuClick={getMenuClick(task)}
                     />
                   ))}
                 </ul>
@@ -264,18 +264,18 @@ export function TaskBoard({
         {activeTask && (
           <TaskItem
             task={activeTask}
+            dragging
             variant="board"
+            onEdit={onEditTask}
             actionsVisible={false}
-            menuItems={getMenuItems(activeTask)}
-            onMenuClick={getMenuClick(activeTask)}
+            onDelete={onDeleteTask}
             onClick={() => undefined}
             onMouseEnter={() => undefined}
             onMouseLeave={() => undefined}
             onToggleDone={onToggleTaskDone}
-            onEdit={onEditTask}
-            onDelete={onDeleteTask}
-            dragging
             style={{ width: overlayWidth }}
+            menuItems={getMenuItems(activeTask)}
+            onMenuClick={getMenuClick(activeTask)}
           />
         )}
       </DragOverlay>
