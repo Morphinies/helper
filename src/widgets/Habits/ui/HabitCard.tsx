@@ -62,7 +62,9 @@ export function HabitCard({
             <Title level={4} className={s["root__habit-card-title"]}>
               {habit.title}
             </Title>
-            {habit.description && <Text type="secondary">{habit.description}</Text>}
+            {habit.description && (
+              <Text type="secondary">{habit.description}</Text>
+            )}
             <Text className={s["root__habit-card-recurrence"]}>
               {getRecurrenceLabel(habit)}
             </Text>

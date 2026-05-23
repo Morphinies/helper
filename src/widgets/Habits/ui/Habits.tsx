@@ -10,14 +10,8 @@ import { Button, Flex } from "antd";
 import { useHabitsView } from "../model/useHabitsView";
 
 export const Habits = () => {
-  const {
-    topbar,
-    dateNavigation,
-    habitList,
-    stats,
-    finishEditing,
-    modal,
-  } = useHabitsView();
+  const { topbar, dateNavigation, habitList, stats, finishEditing, modal } =
+    useHabitsView();
 
   return (
     <Flex flex={1} vertical gap="large" className={s["root"]}>

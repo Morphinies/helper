@@ -27,7 +27,8 @@ function getDefaultDaysOfWeek(startDate: string) {
 }
 
 function getDaysOfWeek(values: HabitFormValues) {
-  if (values.recurrence === "weekly") return getDefaultDaysOfWeek(values.startDate);
+  if (values.recurrence === "weekly")
+    return getDefaultDaysOfWeek(values.startDate);
   if (values.recurrence === "custom_weekdays") return values.daysOfWeek || [];
 
   return undefined;
@@ -94,7 +95,8 @@ export function useHabits(selectedDate: string) {
     return new Set(
       completions
         .filter(
-          (completion) => completion.date === selectedDate && completion.completed,
+          (completion) =>
+            completion.date === selectedDate && completion.completed,
         )
         .map((completion) => completion.habitId),
     );
@@ -152,7 +154,9 @@ export function useHabits(selectedDate: string) {
     const key = completionKey({ habitId, date: selectedDate });
 
     setCompletions((prev) => {
-      const existing = prev.find((completion) => completionKey(completion) === key);
+      const existing = prev.find(
+        (completion) => completionKey(completion) === key,
+      );
 
       if (!existing) {
         return [...prev, { habitId, date: selectedDate, completed: true }];

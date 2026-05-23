@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { App, Form, type MenuProps } from "antd";
-import {
-  CheckOutlined,
-  DeleteOutlined,
-  EditOutlined,
-} from "@ant-design/icons";
+import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { toDateInputValue } from "../lib/date";
 import { getFormValues } from "../lib/habit";
 import { useHabits } from "./useHabits";

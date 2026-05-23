@@ -16,7 +16,9 @@ export function DailyStats({
 }: DailyStatsProps) {
   if (!isLoaded) return null;
 
-  const percent = totalCount ? Math.round((completedCount / totalCount) * 100) : 0;
+  const percent = totalCount
+    ? Math.round((completedCount / totalCount) * 100)
+    : 0;
   const stats = totalCount
     ? `Completed ${completedCount} of ${totalCount} habits`
     : "No habits for this day";

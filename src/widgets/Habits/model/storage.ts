@@ -11,7 +11,8 @@ function isHabit(value: unknown): value is Habit {
   return (
     typeof habit.id === "string" &&
     typeof habit.title === "string" &&
-    (habit.description === undefined || typeof habit.description === "string") &&
+    (habit.description === undefined ||
+      typeof habit.description === "string") &&
     typeof habit.startDate === "string" &&
     (habit.recurrence === "daily" ||
       habit.recurrence === "every_n_days" ||
