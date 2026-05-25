@@ -2,8 +2,7 @@ import s from "./Habits.module.scss";
 import { Card, Dropdown, Flex, Typography, type MenuProps } from "antd";
 import { useTranslations } from "next-intl";
 import { CheckOutlined } from "@ant-design/icons";
-import type { Habit } from "../model/types";
-import { getRecurrenceLabel } from "../lib/habit";
+import { getRecurrenceLabel, type Habit } from "@/entities/habit";
 
 const { Text, Title } = Typography;
 

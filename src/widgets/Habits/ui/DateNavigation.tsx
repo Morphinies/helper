@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { Button, DatePicker, Flex } from "antd";
 import { useTranslations } from "next-intl";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import { shiftDate } from "../lib/date";
+import { shiftDate } from "@/entities/habit";
 
 type DateNavigationProps = {
   selectedDate: string;

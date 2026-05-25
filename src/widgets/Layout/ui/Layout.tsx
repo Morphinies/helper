@@ -4,7 +4,7 @@ import s from "./Layout.module.scss";
 import { PropsWithChildren } from "react";
 import { menuItems } from "../model/menu";
 import { AuthButton } from "@/features/auth";
-import { ThemeButton } from "@/shared/ui/ThemeButton";
+import { ThemeButton } from "@/features/theme";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { Layout as AntdLayout, Flex, Menu, Select } from "antd";

@@ -1,9 +1,9 @@
 import s from "./Habits.module.scss";
 import { Button, Empty, Flex, Spin, Typography, type MenuProps } from "antd";
 import { useTranslations } from "next-intl";
-import type { Habit } from "../model/types";
 import { HabitCard } from "./HabitCard";
 import { AddHabitCard } from "./AddHabitCard";
+import type { Habit } from "@/entities/habit";
 
 const { Text } = Typography;
 

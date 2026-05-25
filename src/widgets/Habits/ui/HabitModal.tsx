@@ -10,8 +10,8 @@ import {
   type FormInstance,
 } from "antd";
 import { useTranslations } from "next-intl";
-import type { Habit, HabitFormValues, HabitRecurrence } from "../model/types";
 import s from "./Habits.module.scss";
+import type { Habit, HabitFormValues, HabitRecurrence } from "@/entities/habit";
 
 const recurrenceValues: HabitRecurrence[] = [
   "daily",

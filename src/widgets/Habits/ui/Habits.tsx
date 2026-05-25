@@ -24,15 +24,19 @@ export const Habits = () => {
       <Flex flex={1} vertical gap="middle">
         <HabitList {...habitList} />
 
-        <DailyStats {...stats} />
+        {!!habitList.habits.length && (
+          <>
+            <DailyStats {...stats} />
 
-        {finishEditing.visible && (
-          <Button
-            className={s["root__finish-button"]}
-            onClick={finishEditing.onClick}
-          >
-            {t("actions.finishEditing")}
-          </Button>
+            {finishEditing.visible && (
+              <Button
+                className={s["root__finish-button"]}
+                onClick={finishEditing.onClick}
+              >
+                {t("actions.finishEditing")}
+              </Button>
+            )}
+          </>
         )}
       </Flex>
 

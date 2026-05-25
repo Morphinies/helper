@@ -2,10 +2,13 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { App, Form, type MenuProps } from "antd";
 import { CheckOutlined, DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { toDateInputValue } from "../lib/date";
-import { getFormValues } from "../lib/habit";
-import { useHabits } from "./useHabits";
-import type { Habit, HabitFormValues } from "./types";
+import {
+  useHabits,
+  getFormValues,
+  toDateInputValue,
+  type Habit,
+  type HabitFormValues,
+} from "@/entities/habit";
 
 export function useHabitsView() {
   const t = useTranslations("habits");

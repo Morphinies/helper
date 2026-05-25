@@ -86,6 +86,7 @@ Layout auth-страниц находится в `src/app/[locale]/(auth)/layout
 Текущие features:
 
 - `auth` - кнопка входа/выхода и форма логина.
+- `theme` - кнопка переключения темы приложения.
 
 Внутри feature используется локальная структура:
 
@@ -101,6 +102,8 @@ helper-функции, которые описывают предметную о
 
 Текущие entities:
 
+- `habit` - типы привычки, работа со списком привычек, completion-состояние,
+  local storage, helper-функции для дат, формы и recurrence.
 - `task` - типы задачи, работа со списком задач, local storage и helper-функции
   для статусов и формы задачи.
 
@@ -117,10 +120,11 @@ helper-функции, которые описывают предметную о
 Текущие widgets:
 
 - `Layout` - основной layout приложения с меню, переключателем locale, темой и
-  auth-кнопкой из `features/auth`.
+  кнопками из `features/auth` и `features/theme`.
 - `PageWrapper` - серверная защита страницы, загрузка переводов страницы и
   клиентская обёртка контента.
-- `Habits` - экран привычек, его UI, model, lib и local storage.
+- `Habits` - экран привычек, его UI и экранная model. Данные и helpers привычки
+  находятся в `entities/habit`.
 - `Tasks` - экран задач, его UI и экранная model. Данные и helpers задачи
   находятся в `entities/task`.
 
@@ -170,8 +174,9 @@ helper-функции, которые описывают предметную о
 - импорт как `s`;
 - классы используются через `s["class-name"]`.
 
-Настройки темы находятся в `src/styles/themeConfig.ts`, а переключение темы
-проходит через `ThemeProvider` и `ThemeButton`.
+Настройки темы находятся в `src/styles/themeConfig.ts`, provider темы - в
+`src/app/providers/ThemeProvider.tsx`, а пользовательское действие переключения
+темы - в `features/theme`.
 
 ## Правила добавления новых страниц
 
