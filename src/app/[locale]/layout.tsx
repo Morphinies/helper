@@ -2,7 +2,6 @@ import "antd/dist/reset.css";
 import "@/styles/globals.scss";
 import { routing } from "@/i18n/routing";
 import { Providers } from "../providers";
-import { Layout } from "@/widgets/Layout";
 import { notFound } from "next/navigation";
 import { fontsClass } from "@/styles/fonts";
 import { setRequestLocale } from "next-intl/server";
@@ -40,9 +39,7 @@ export default async function RootLayout({
     <html lang={locale} className={fontsClass}>
       <body>
         <NextIntlClientProvider>
-          <Providers>
-            <Layout>{children}</Layout>
-          </Providers>
+          <Providers>{children}</Providers>
         </NextIntlClientProvider>
       </body>
     </html>

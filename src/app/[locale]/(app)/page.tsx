@@ -11,12 +11,8 @@ export async function generateMetadata({
   params,
 }: HomePageProps): Promise<Metadata> {
   const { locale } = await params;
-  const metadata = await getPageMetadataMessages(locale, "habits");
 
-  return {
-    ...metadata,
-    title: `${metadata.title} | Helper`,
-  };
+  return getPageMetadataMessages(locale, "habits");
 }
 
 export default async function HomePage({ params }: HomePageProps) {

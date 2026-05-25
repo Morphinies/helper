@@ -8,5 +8,20 @@
   },
   "localeSwitcher": {
     "title": "Switch language"
+  },
+  "auth": {
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "cancel": "Cancel",
+    "signOutConfirmTitle": "Sign out?",
+    "signInTitle": "Sign in",
+    "login": "Login",
+    "password": "Password",
+    "loginRequired": "Enter login",
+    "passwordRequired": "Enter password",
+    "invalidCredentials": "Invalid login or password",
+    "localSignInDescription": "Use local credentials for development.",
+    "oauthSignInDescription": "Or use an external provider.",
+    "signInWithVk": "Sign in with VK"
   }
 }

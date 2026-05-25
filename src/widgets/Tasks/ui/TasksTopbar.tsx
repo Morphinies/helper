@@ -1,5 +1,5 @@
-import { PlusOutlined } from "@ant-design/icons";
 import { useTranslations } from "next-intl";
+import { PlusOutlined } from "@ant-design/icons";
 import { Button, Flex, Radio, Typography } from "antd";
 import type { TasksViewMode } from "../model/useTasksView";
 

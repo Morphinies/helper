@@ -3,6 +3,10 @@ import { type BreadcrumbProps } from "antd";
 import PageWrapperClient from "./PageWrapperClient";
 import { getMessages, MessageNamespace } from "@/i18n/messages";
 import { IntlMessagesProvider } from "@/app/providers/IntlMessagesProvider";
+import { routing } from "@/i18n/routing";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/shared/lib/auth/options";
 
 export interface PageWrapperProps extends PropsWithChildren {
   locale: string;
@@ -15,6 +19,14 @@ export const PageWrapper = async ({
   messagesKey,
   ...props
 }: PageWrapperProps) => {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    const prefix = locale === routing.defaultLocale ? "" : `/${locale}`;
+
+    redirect(`${prefix}/login`);
+  }
+
   const messages = await getMessages(locale, messagesKey);
 
   return (

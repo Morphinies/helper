@@ -8,5 +8,20 @@
   },
   "localeSwitcher": {
     "title": "Сменить язык"
+  },
+  "auth": {
+    "signIn": "Войти",
+    "signOut": "Выйти",
+    "cancel": "Отмена",
+    "signOutConfirmTitle": "Выйти из аккаунта?",
+    "signInTitle": "Вход",
+    "login": "Логин",
+    "password": "Пароль",
+    "loginRequired": "Введите логин",
+    "passwordRequired": "Введите пароль",
+    "invalidCredentials": "Неверный логин или пароль",
+    "localSignInDescription": "Используйте локальные данные для разработки.",
+    "oauthSignInDescription": "Или войдите через внешний сервис.",
+    "signInWithVk": "Войти через VK"
   }
 }

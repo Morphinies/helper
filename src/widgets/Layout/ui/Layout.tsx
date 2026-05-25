@@ -3,10 +3,11 @@
 import s from "./Layout.module.scss";
 import { PropsWithChildren } from "react";
 import { menuItems } from "../model/menu";
+import { AuthButton } from "@/features/auth";
+import { ThemeButton } from "@/shared/ui/ThemeButton";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { Layout as AntdLayout, Flex, Menu, Select } from "antd";
-import { ThemeButton } from "@/shared/ui/ThemeButton";
 import prepareMenuItems from "@/shared/utils/prepareMenuItems";
 
 const { Header } = AntdLayout;
@@ -54,6 +55,7 @@ export const Layout = ({ children }: PropsWithChildren) => {
             }}
           />
           <ThemeButton className={s["root__theme-button"]} />
+          <AuthButton />
         </Flex>
       </Header>
       {children}
