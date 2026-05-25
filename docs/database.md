@@ -17,8 +17,8 @@
 - Сгенерированный client не хранится в git и пересоздаётся командой
   `npm run db:generate`.
 
-Сейчас схема ещё не содержит models. Таблицы пользователей, задач и привычек
-будут добавляться отдельными этапами.
+Сейчас в схеме есть базовая model `User`. Таблицы задач и привычек будут
+добавляться отдельными этапами.
 
 ## DB client
 
@@ -64,6 +64,17 @@ npm run db:generate
 npm run db:migrate:dev
 ```
 
+`prisma migrate dev` использует shadow database. Для этой команды пользователь
+PostgreSQL должен иметь право `CREATE DATABASE`, либо нужно настроить отдельный
+`SHADOW_DATABASE_URL`.
+
+Для локальной разработки роль из `DATABASE_URL` должна иметь право `CREATEDB`.
+Например:
+
+```sql
+ALTER ROLE helper_user CREATEDB;
+```
+
 Открыть Prisma Studio:
 
 ```bash
@@ -86,6 +97,27 @@ npm.cmd exec prisma -- db pull --print
 - `P1000` - неверные credentials;
 - `P1001` - сервер БД недоступен;
 - `P1003` - база не существует.
+- `P3014` - Prisma не смогла создать shadow database для `migrate dev`.
+
+## Миграции
+
+Первая миграция:
+
+- `prisma/migrations/20260525232246_init_user/migration.sql`
+- создаёт таблицу `User`;
+- создаёт уникальный индекс `User_email_key`.
+
+Статус миграций можно проверить командой:
+
+```bash
+npm.cmd exec prisma -- migrate status
+```
+
+Новые dev-миграции запускаются командой:
+
+```bash
+npm run db:migrate:dev
+```
 
 ## Правила
 
