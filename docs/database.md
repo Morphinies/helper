@@ -11,6 +11,7 @@
 - БД: PostgreSQL.
 - Prisma config: `prisma.config.ts`.
 - Prisma schema: `prisma/schema.prisma`.
+- DB client: `src/shared/lib/db`.
 - URL подключения берётся из `DATABASE_URL`.
 - Prisma Client генерируется в `src/generated/prisma`.
 - Сгенерированный client не хранится в git и пересоздаётся командой
@@ -18,6 +19,20 @@
 
 Сейчас схема ещё не содержит models. Таблицы пользователей, задач и привычек
 будут добавляться отдельными этапами.
+
+## DB client
+
+Серверный Prisma Client экспортируется из `src/shared/lib/db`:
+
+```ts
+import { prisma } from "@/shared/lib/db";
+```
+
+Модуль помечен через `import "server-only"`, поэтому его нельзя импортировать в
+Client Components.
+
+В development-режиме используется singleton через `globalThis`, чтобы при
+пересборках Next.js не создавать лишние подключения к БД.
 
 ## Переменные окружения
 
