@@ -18,8 +18,7 @@ import {
 import s from "./Tasks.module.scss";
 import { TaskItem } from "./TaskItem";
 import { SortableTaskItem } from "./SortableTaskItem";
-import type { Task, TaskStatus } from "../model/types";
-import { getStatusLabel, statusValues } from "../lib/task";
+import { getStatusLabel, statusValues, type Task, type TaskStatus } from "@/entities/task";
 import { Flex, Spin, Typography, type MenuProps } from "antd";
 import { useTranslations } from "next-intl";
 import { useRef, useState, type PropsWithChildren } from "react";

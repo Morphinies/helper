@@ -6,9 +6,14 @@ import {
   DeleteOutlined,
   EditOutlined,
 } from "@ant-design/icons";
-import { useTasks } from "./useTasks";
-import type { Task, TaskFormValues, TaskStatus } from "./types";
-import { getEmptyTaskFormValues, getTaskFormValues } from "../lib/task";
+import {
+  useTasks,
+  getTaskFormValues,
+  getEmptyTaskFormValues,
+  type Task,
+  type TaskStatus,
+  type TaskFormValues,
+} from "@/entities/task";
 
 export type TasksViewMode = "list" | "board";
 

@@ -9,8 +9,7 @@ import {
 import s from "./Tasks.module.scss";
 import dayjs, { type Dayjs } from "dayjs";
 import { useTranslations } from "next-intl";
-import { getStatusOptions } from "../lib/task";
-import type { Task, TaskFormValues } from "../model/types";
+import { getStatusOptions, type Task, type TaskFormValues } from "@/entities/task";
 
 type TaskModalProps = {
   open: boolean;

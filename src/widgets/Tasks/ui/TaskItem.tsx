@@ -15,8 +15,7 @@ import {
 } from "antd";
 import { useTranslations } from "next-intl";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import type { Task } from "../model/types";
-import { getStatusLabel } from "../lib/task";
+import { getStatusLabel, type Task } from "@/entities/task";
 
 const { Text, Title } = Typography;
 

@@ -16,9 +16,9 @@ import {
 import { Empty, Spin, type MenuProps } from "antd";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import type { Task } from "../model/types";
 import { SortableTaskItem } from "./SortableTaskItem";
 import { TaskItem } from "./TaskItem";
+import type { Task } from "@/entities/task";
 
 type TaskListProps = {
   tasks: Task[];

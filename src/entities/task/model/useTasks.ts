@@ -22,10 +22,7 @@ export function useTasks() {
   }, [isLoaded, tasks]);
 
   const addTask = (values: TaskFormValues) => {
-    const maxOrder = tasks.reduce(
-      (max, task) => Math.max(max, task.order),
-      0,
-    );
+    const maxOrder = tasks.reduce((max, task) => Math.max(max, task.order), 0);
     const newTask: Task = {
       id: crypto.randomUUID(),
       order: maxOrder + 1000,
