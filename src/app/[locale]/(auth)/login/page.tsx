@@ -1,8 +1,7 @@
 import { Login } from "@/features/auth";
 import { routing } from "@/i18n/routing";
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/shared/lib/auth/options";
+import { getCurrentUser } from "@/shared/lib/auth/session";
 import type { Metadata } from "next";
 
 type LoginPageProps = {
@@ -15,9 +14,9 @@ export const metadata: Metadata = {
 
 export default async function LoginPage({ params }: LoginPageProps) {
   const { locale } = await params;
-  const session = await getServerSession(authOptions);
+  const user = await getCurrentUser();
 
-  if (session) {
+  if (user) {
     const prefix = locale === routing.defaultLocale ? "" : `/${locale}`;
 
     redirect(`${prefix}/`);

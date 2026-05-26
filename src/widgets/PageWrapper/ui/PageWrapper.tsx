@@ -5,8 +5,7 @@ import { getMessages, MessageNamespace } from "@/i18n/messages";
 import { IntlMessagesProvider } from "@/app/providers/IntlMessagesProvider";
 import { routing } from "@/i18n/routing";
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/shared/lib/auth/options";
+import { getCurrentUser } from "@/shared/lib/auth/session";
 
 export interface PageWrapperProps extends PropsWithChildren {
   locale: string;
@@ -19,9 +18,9 @@ export const PageWrapper = async ({
   messagesKey,
   ...props
 }: PageWrapperProps) => {
-  const session = await getServerSession(authOptions);
+  const user = await getCurrentUser();
 
-  if (!session) {
+  if (!user) {
     const prefix = locale === routing.defaultLocale ? "" : `/${locale}`;
 
     redirect(`${prefix}/login`);

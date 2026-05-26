@@ -24,10 +24,18 @@
 
 Защита страниц выполняется на сервере в `PageWrapper`:
 
-- `PageWrapper` вызывает `getServerSession(authOptions)`.
+- `PageWrapper` вызывает `getCurrentUser()` из
+  `src/shared/lib/auth/session.ts`.
 - Если сессии нет, пользователь перенаправляется на `/login` для дефолтной
   локали или на `/{locale}/login` для остальных локалей.
 - Если сессия есть, загружаются сообщения страницы и страница рендерится.
+
+Server-side helpers авторизации находятся в `src/shared/lib/auth/session.ts`:
+
+- `getAuthSession()` возвращает raw `next-auth` session.
+- `getCurrentUser()` возвращает текущего пользователя с `id` или `null`.
+- `requireCurrentUser()` возвращает пользователя или бросает
+  `UnauthorizedError`; этот helper предназначен для будущего BFF-слоя.
 
 Страница входа находится в auth route group:
 

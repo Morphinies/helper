@@ -198,7 +198,8 @@ helper-функции, которые описывают предметную о
 
 1. Добавить route в `src/app/[locale]/(auth)`.
 2. Не использовать основной `widgets/Layout`.
-3. При необходимости проверять сессию на сервере через `getServerSession`.
+3. При необходимости проверять пользователя на сервере через
+   `getCurrentUser()` из `src/shared/lib/auth/session.ts`.
 
 ## Code style
 
