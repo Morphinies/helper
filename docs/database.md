@@ -182,3 +182,16 @@ Route handlers для задач находятся в `src/app/api/tasks`.
 - возвращает `401`, если пользователь не авторизован;
 - валидирует входной JSON;
 - работает только с задачами текущего `userId`.
+
+## Client data
+
+Клиентский hook `src/entities/task/model/useTasks.ts` больше не использует
+`localStorage`.
+
+Для задач используется React Query:
+
+- `GET /api/tasks` загружает список;
+- mutations вызывают BFF endpoints;
+- после mutations query инвалидируется;
+- для перемещения задач используется optimistic update, чтобы drag/drop не
+  ощущался медленным.
