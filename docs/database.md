@@ -162,3 +162,23 @@ Repository:
 - фильтрует все операции по `userId`;
 - преобразует `deadline` между строкой `YYYY-MM-DD` в доменном типе и
   PostgreSQL `DATE`.
+
+## BFF endpoints
+
+Route handlers для задач находятся в `src/app/api/tasks`.
+
+Доступные endpoints:
+
+- `GET /api/tasks` - список задач текущего пользователя.
+- `POST /api/tasks` - создать задачу.
+- `PATCH /api/tasks/{id}` - обновить задачу.
+- `DELETE /api/tasks/{id}` - удалить задачу.
+- `POST /api/tasks/{id}/toggle` - переключить задачу между `done` и `todo`.
+- `PATCH /api/tasks/{id}/move` - изменить статус и порядок задачи.
+
+Каждый endpoint:
+
+- получает пользователя через `requireCurrentUser()`;
+- возвращает `401`, если пользователь не авторизован;
+- валидирует входной JSON;
+- работает только с задачами текущего `userId`.

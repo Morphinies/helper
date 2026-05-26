@@ -55,7 +55,7 @@ export async function createTask(userId: string, values: TaskFormValues) {
     data: {
       userId,
       title: values.title,
-      description: values.description,
+      description: values.description ?? null,
       status: values.status,
       deadline: toDate(values.deadline),
       order: (maxOrderTask?.order ?? 0) + 1000,
@@ -74,7 +74,7 @@ export async function updateTask(
     where: { id, userId },
     data: {
       title: values.title,
-      description: values.description,
+      description: values.description ?? null,
       status: values.status,
       deadline: toDate(values.deadline),
     },
