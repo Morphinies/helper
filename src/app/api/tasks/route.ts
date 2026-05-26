@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireCurrentUser } from "@/shared/lib/auth/session";
+import { handleRouteError, readJsonObject } from "@/shared/lib/api/http";
 import { createTask, getTasks } from "@/entities/task/server/repository";
 import { getTaskFormValues } from "./_lib/validation";
-import { handleRouteError, readJsonObject } from "./_lib/http";
 
 export async function GET() {
   try {

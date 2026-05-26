@@ -1,4 +1,4 @@
-import { BadRequestError } from "./http";
+import { BadRequestError } from "@/shared/lib/api/http";
 
 import type {
   HabitFormValues,

@@ -1,5 +1,5 @@
 import { statusValues } from "@/entities/task/lib/task";
-import { BadRequestError } from "./http";
+import { BadRequestError } from "@/shared/lib/api/http";
 
 import type { TaskFormValues, TaskStatus } from "@/entities/task/model/types";
 

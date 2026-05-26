@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireCurrentUser } from "@/shared/lib/auth/session";
+import { handleRouteError } from "@/shared/lib/api/http";
 import { toggleTaskDone } from "@/entities/task/server/repository";
 import { getTaskId } from "../../_lib/validation";
-import { handleRouteError } from "../../_lib/http";
 
 type TaskToggleRouteContext = {
   params: Promise<{ id: string }>;

@@ -143,7 +143,8 @@ repositories, client hooks и чистые helper-функции, которые
 `shared` содержит код, который не принадлежит конкретному экрану:
 
 - `shared/ui` - переиспользуемые UI-компоненты.
-- `shared/lib` - инфраструктурные настройки, например store и auth options.
+- `shared/lib` - инфраструктурные настройки, например store, auth options,
+  DB client и общие server helpers для API.
 - `shared/utils` - общие утилиты.
 - `shared/types` - общие типы.
 

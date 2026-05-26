@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireCurrentUser } from "@/shared/lib/auth/session";
+import { handleRouteError, readJsonObject } from "@/shared/lib/api/http";
 import { deleteHabit, updateHabit } from "@/entities/habit/server/repository";
 import { getHabitFormValues, getHabitId } from "../_lib/validation";
-import { handleRouteError, readJsonObject } from "../_lib/http";
 
 type HabitRouteContext = {
   params: Promise<{ id: string }>;

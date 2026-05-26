@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireCurrentUser } from "@/shared/lib/auth/session";
+import { handleRouteError, readJsonObject } from "@/shared/lib/api/http";
 import { moveTask } from "@/entities/task/server/repository";
 import { getTaskId, getTaskMoveValues } from "../../_lib/validation";
-import { handleRouteError, readJsonObject } from "../../_lib/http";
 
 type TaskMoveRouteContext = {
   params: Promise<{ id: string }>;

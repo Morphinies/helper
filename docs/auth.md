@@ -35,7 +35,8 @@ Server-side helpers авторизации находятся в `src/shared/lib
 - `getAuthSession()` возвращает raw `next-auth` session.
 - `getCurrentUser()` возвращает текущего пользователя с `id` или `null`.
 - `requireCurrentUser()` возвращает пользователя или бросает
-  `UnauthorizedError`; этот helper предназначен для будущего BFF-слоя.
+  `UnauthorizedError`; этот helper используется BFF route handlers перед
+  доступом к пользовательским данным.
 
 Страница входа находится в auth route group:
 

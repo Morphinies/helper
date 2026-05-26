@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { requireCurrentUser } from "@/shared/lib/auth/session";
+import { handleRouteError, readJsonObject } from "@/shared/lib/api/http";
 import { toggleHabitCompletion } from "@/entities/habit/server/repository";
 import { getHabitDate, getHabitId } from "../../_lib/validation";
-import { handleRouteError, readJsonObject } from "../../_lib/http";
 
 type HabitCompletionRouteContext = {
   params: Promise<{ id: string }>;
