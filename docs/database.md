@@ -162,8 +162,10 @@ npm run db:migrate:dev
 
 ## Server repositories
 
-Server-only операции задач находятся в
-`src/entities/task/server/repository.ts`.
+Server-only операции находятся рядом с соответствующими entities:
+
+- задачи: `src/entities/task/server/repository.ts`;
+- привычки: `src/entities/habit/server/repository.ts`.
 
 Repository:
 
@@ -172,7 +174,10 @@ Repository:
 - принимает `userId` во всех операциях;
 - фильтрует все операции по `userId`;
 - преобразует `deadline` между строкой `YYYY-MM-DD` в доменном типе и
-  PostgreSQL `DATE`.
+  PostgreSQL `DATE`;
+- преобразует `startDate` и `completion.date` привычек между строкой
+  `YYYY-MM-DD` в доменном типе и PostgreSQL `DATE`;
+- содержит серверную логику выборки привычек, видимых на выбранную дату.
 
 ## BFF endpoints
 
