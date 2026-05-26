@@ -208,8 +208,8 @@ Route handlers находятся в `src/app/api/tasks` и `src/app/api/habits`
 
 ## Client data
 
-Клиентский hook `src/entities/task/model/useTasks.ts` больше не использует
-`localStorage`.
+Клиентские hooks `src/entities/task/model/useTasks.ts` и
+`src/entities/habit/model/useHabits.ts` больше не используют `localStorage`.
 
 Для задач используется React Query:
 
@@ -218,3 +218,12 @@ Route handlers находятся в `src/app/api/tasks` и `src/app/api/habits`
 - после mutations query инвалидируется;
 - для перемещения задач используется optimistic update, чтобы drag/drop не
   ощущался медленным.
+
+Для привычек используется React Query:
+
+- `GET /api/habits?date=YYYY-MM-DD` загружает список привычек, видимые на дату
+  привычки и completions;
+- mutations вызывают BFF endpoints;
+- после mutations query инвалидируется;
+- completion текущей даты обновляется в query cache сразу после успешного
+  ответа API.

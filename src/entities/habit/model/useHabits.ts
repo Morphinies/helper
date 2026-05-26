@@ -1,180 +1,217 @@
-import { useEffect, useMemo, useState } from "react";
-import {
-  readHabitCompletions,
-  readHabits,
-  writeHabitCompletions,
-  writeHabits,
-} from "./storage";
+import { useMemo } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { Habit, HabitCompletion, HabitFormValues } from "./types";
 
-const DAY_MS = 24 * 60 * 60 * 1000;
+const habitsQueryKey = ["habits"] as const;
 
-function parseDate(value: string) {
-  const [year, month, day] = value.split("-").map(Number);
+type HabitsResponse = {
+  habits: Habit[];
+  visibleHabits: Habit[];
+  completions: HabitCompletion[];
+};
 
-  return new Date(year, month - 1, day);
+type HabitResponse = {
+  habit: Habit;
+};
+
+type HabitCompletionResponse = {
+  completion: HabitCompletion;
+};
+
+function getHabitsQueryKey(selectedDate: string) {
+  return [...habitsQueryKey, selectedDate] as const;
 }
 
-function daysBetween(startDate: string, selectedDate: string) {
-  return Math.floor(
-    (parseDate(selectedDate).getTime() - parseDate(startDate).getTime()) /
-      DAY_MS,
+async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
+  const response = await fetch(url, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      ...init?.headers,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Request failed with status ${response.status}`);
+  }
+
+  return response.json() as Promise<T>;
+}
+
+async function fetchHabits(selectedDate: string) {
+  const searchParams = new URLSearchParams({ date: selectedDate });
+
+  return requestJson<HabitsResponse>(`/api/habits?${searchParams}`);
+}
+
+async function createHabit(values: HabitFormValues) {
+  return requestJson<HabitResponse>("/api/habits", {
+    method: "POST",
+    body: JSON.stringify(values),
+  }).then(({ habit }) => habit);
+}
+
+async function updateHabitRequest(id: Habit["id"], values: HabitFormValues) {
+  return requestJson<HabitResponse>(`/api/habits/${id}`, {
+    method: "PATCH",
+    body: JSON.stringify(values),
+  }).then(({ habit }) => habit);
+}
+
+async function deleteHabitRequest(id: Habit["id"]) {
+  const response = await fetch(`/api/habits/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Request failed with status ${response.status}`);
+  }
+}
+
+async function toggleHabitCompletionRequest({
+  habitId,
+  selectedDate,
+}: {
+  habitId: Habit["id"];
+  selectedDate: string;
+}) {
+  return requestJson<HabitCompletionResponse>(
+    `/api/habits/${habitId}/completion`,
+    {
+      method: "POST",
+      body: JSON.stringify({ date: selectedDate }),
+    },
+  ).then(({ completion }) => completion);
+}
+
+function replaceHabit(habits: Habit[] | undefined, nextHabit: Habit) {
+  return (habits ?? []).map((habit) =>
+    habit.id === nextHabit.id ? nextHabit : habit,
   );
 }
 
-function getDefaultDaysOfWeek(startDate: string) {
-  return [parseDate(startDate).getDay()];
-}
+function updateCompletion(
+  completions: HabitCompletion[] | undefined,
+  nextCompletion: HabitCompletion,
+) {
+  const currentCompletions = completions ?? [];
+  const completionIndex = currentCompletions.findIndex(
+    (completion) =>
+      completion.habitId === nextCompletion.habitId &&
+      completion.date === nextCompletion.date,
+  );
 
-function getDaysOfWeek(values: HabitFormValues) {
-  if (values.recurrence === "weekly")
-    return getDefaultDaysOfWeek(values.startDate);
-  if (values.recurrence === "custom_weekdays") return values.daysOfWeek || [];
+  if (completionIndex === -1) return [...currentCompletions, nextCompletion];
 
-  return undefined;
-}
-
-function isHabitVisible(habit: Habit, selectedDate: string) {
-  if (!habit.isActive || selectedDate < habit.startDate) return false;
-
-  if (habit.recurrence === "daily") return true;
-
-  if (habit.recurrence === "every_n_days") {
-    const interval = habit.interval && habit.interval > 0 ? habit.interval : 1;
-
-    return daysBetween(habit.startDate, selectedDate) % interval === 0;
-  }
-
-  const daysOfWeek =
-    habit.recurrence === "custom_weekdays"
-      ? habit.daysOfWeek || []
-      : habit.daysOfWeek?.length
-        ? habit.daysOfWeek
-        : getDefaultDaysOfWeek(habit.startDate);
-
-  return daysOfWeek.includes(parseDate(selectedDate).getDay());
-}
-
-function completionKey(completion: Pick<HabitCompletion, "habitId" | "date">) {
-  return `${completion.habitId}:${completion.date}`;
+  return currentCompletions.map((completion, index) =>
+    index === completionIndex ? nextCompletion : completion,
+  );
 }
 
 export function useHabits(selectedDate: string) {
-  const [habits, setHabits] = useState<Habit[]>([]);
-  const [completions, setCompletions] = useState<HabitCompletion[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const queryClient = useQueryClient();
+  const queryKey = getHabitsQueryKey(selectedDate);
+  const {
+    data = {
+      habits: [],
+      visibleHabits: [],
+      completions: [],
+    },
+    isLoading,
+  } = useQuery({
+    queryKey,
+    queryFn: () => fetchHabits(selectedDate),
+  });
+  const invalidateHabits = () =>
+    queryClient.invalidateQueries({ queryKey: habitsQueryKey });
 
-  useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      setHabits(readHabits());
-      setCompletions(readHabitCompletions());
-      setIsLoaded(true);
-    }, 0);
-
-    return () => window.clearTimeout(timeoutId);
-  }, []);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-
-    writeHabits(habits);
-  }, [habits, isLoaded]);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-
-    writeHabitCompletions(completions);
-  }, [completions, isLoaded]);
-
-  const visibleHabits = useMemo(
-    () => habits.filter((habit) => isHabitVisible(habit, selectedDate)),
-    [habits, selectedDate],
-  );
+  const addHabitMutation = useMutation({
+    mutationFn: createHabit,
+    onSuccess: (habit) => {
+      queryClient.setQueryData<HabitsResponse>(queryKey, (current) => ({
+        habits: [...(current?.habits ?? []), habit],
+        visibleHabits: current?.visibleHabits ?? [],
+        completions: current?.completions ?? [],
+      }));
+    },
+    onSettled: invalidateHabits,
+  });
+  const updateHabitMutation = useMutation({
+    mutationFn: ({
+      id,
+      values,
+    }: {
+      id: Habit["id"];
+      values: HabitFormValues;
+    }) => updateHabitRequest(id, values),
+    onSuccess: (habit) => {
+      queryClient.setQueryData<HabitsResponse>(queryKey, (current) => ({
+        habits: replaceHabit(current?.habits, habit),
+        visibleHabits: replaceHabit(current?.visibleHabits, habit),
+        completions: current?.completions ?? [],
+      }));
+    },
+    onSettled: invalidateHabits,
+  });
+  const deleteHabitMutation = useMutation({
+    mutationFn: deleteHabitRequest,
+    onSuccess: (_, id) => {
+      queryClient.setQueryData<HabitsResponse>(queryKey, (current) => ({
+        habits: (current?.habits ?? []).filter((habit) => habit.id !== id),
+        visibleHabits: (current?.visibleHabits ?? []).filter(
+          (habit) => habit.id !== id,
+        ),
+        completions: (current?.completions ?? []).filter(
+          (completion) => completion.habitId !== id,
+        ),
+      }));
+    },
+    onSettled: invalidateHabits,
+  });
+  const toggleCompletionMutation = useMutation({
+    mutationFn: toggleHabitCompletionRequest,
+    onSuccess: (completion) => {
+      queryClient.setQueryData<HabitsResponse>(queryKey, (current) => ({
+        habits: current?.habits ?? [],
+        visibleHabits: current?.visibleHabits ?? [],
+        completions: updateCompletion(current?.completions, completion),
+      }));
+    },
+    onSettled: invalidateHabits,
+  });
 
   const completedHabitIds = useMemo(() => {
     return new Set(
-      completions
+      data.completions
         .filter(
           (completion) =>
             completion.date === selectedDate && completion.completed,
         )
         .map((completion) => completion.habitId),
     );
-  }, [completions, selectedDate]);
+  }, [data.completions, selectedDate]);
 
   const addHabit = (values: HabitFormValues) => {
-    const now = new Date().toISOString();
-    const newHabit: Habit = {
-      id: crypto.randomUUID(),
-      title: values.title,
-      description: values.description,
-      startDate: values.startDate,
-      recurrence: values.recurrence,
-      interval:
-        values.recurrence === "every_n_days" ? values.interval || 1 : undefined,
-      daysOfWeek: getDaysOfWeek(values),
-      isActive: true,
-      createdAt: now,
-      updatedAt: now,
-    };
-
-    setHabits((prev) => [...prev, newHabit]);
+    addHabitMutation.mutate(values);
   };
 
-  const updateHabit = (id: string, values: HabitFormValues) => {
-    setHabits((prev) =>
-      prev.map((habit) =>
-        habit.id === id
-          ? {
-              ...habit,
-              title: values.title,
-              description: values.description,
-              startDate: values.startDate,
-              recurrence: values.recurrence,
-              interval:
-                values.recurrence === "every_n_days"
-                  ? values.interval || 1
-                  : undefined,
-              daysOfWeek: getDaysOfWeek(values),
-              updatedAt: new Date().toISOString(),
-            }
-          : habit,
-      ),
-    );
+  const updateHabit = (id: Habit["id"], values: HabitFormValues) => {
+    updateHabitMutation.mutate({ id, values });
   };
 
-  const deleteHabit = (id: string) => {
-    setHabits((prev) => prev.filter((habit) => habit.id !== id));
-    setCompletions((prev) =>
-      prev.filter((completion) => completion.habitId !== id),
-    );
+  const deleteHabit = (id: Habit["id"]) => {
+    deleteHabitMutation.mutate(id);
   };
 
-  const toggleCompletion = (habitId: string) => {
-    const key = completionKey({ habitId, date: selectedDate });
-
-    setCompletions((prev) => {
-      const existing = prev.find(
-        (completion) => completionKey(completion) === key,
-      );
-
-      if (!existing) {
-        return [...prev, { habitId, date: selectedDate, completed: true }];
-      }
-
-      return prev.map((completion) =>
-        completionKey(completion) === key
-          ? { ...completion, completed: !completion.completed }
-          : completion,
-      );
-    });
+  const toggleCompletion = (habitId: Habit["id"]) => {
+    toggleCompletionMutation.mutate({ habitId, selectedDate });
   };
 
   return {
-    habits,
-    visibleHabits,
+    habits: data.habits,
+    visibleHabits: data.visibleHabits,
     completedHabitIds,
-    isLoaded,
+    isLoaded: !isLoading,
     addHabit,
     updateHabit,
     deleteHabit,
