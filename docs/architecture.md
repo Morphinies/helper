@@ -104,7 +104,8 @@ repositories, client hooks и чистые helper-функции, которые
 Текущие entities:
 
 - `habit` - типы привычки, работа со списком привычек, completion-состояние,
-  local storage, helper-функции для дат, формы и recurrence.
+  BFF-backed client hook, server repository, helper-функции для дат, формы и
+  recurrence.
 - `task` - типы задачи, BFF-backed client hook, server repository и
   helper-функции для статусов и формы задачи.
 
