@@ -148,3 +148,17 @@ npm run db:migrate:dev
 - BFF-слой должен проверять авторизацию перед каждым запросом к данным
   пользователя.
 - Все запросы к пользовательским данным должны фильтроваться по `userId`.
+
+## Server repositories
+
+Server-only операции задач находятся в
+`src/entities/task/server/repository.ts`.
+
+Repository:
+
+- импортирует `prisma` только на сервере;
+- не экспортируется из client-facing barrel `src/entities/task/index.ts`;
+- принимает `userId` во всех операциях;
+- фильтрует все операции по `userId`;
+- преобразует `deadline` между строкой `YYYY-MM-DD` в доменном типе и
+  PostgreSQL `DATE`.
