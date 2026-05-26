@@ -17,15 +17,15 @@
 - Сгенерированный client не хранится в git и пересоздаётся командой
   `npm run db:generate`.
 
-Сейчас в схеме есть models для авторизации и задач:
+Сейчас в схеме есть models для авторизации, задач и привычек:
 
 - `User`;
 - `Account`;
 - `Session`;
 - `VerificationToken`.
 - `Task`.
-
-Таблицы привычек будут добавляться отдельным этапом.
+- `Habit`;
+- `HabitCompletion`.
 
 ## DB client
 
@@ -128,6 +128,17 @@ npm.cmd exec prisma -- db pull --print
 - создаёт таблицу `Task`;
 - добавляет связь `Task.userId -> User.id`;
 - добавляет индексы `Task_userId_order_idx` и `Task_userId_status_idx`.
+
+Четвёртая миграция:
+
+- `prisma/migrations/20260526192311_add_habit_models/migration.sql`
+- создаёт enum `HabitRecurrence`;
+- создаёт таблицы `Habit` и `HabitCompletion`;
+- добавляет связи `Habit.userId -> User.id`,
+  `HabitCompletion.habitId -> Habit.id` и
+  `HabitCompletion.userId -> User.id`;
+- добавляет уникальность `HabitCompletion_habitId_date_key`;
+- добавляет индексы по пользователю и датам привычек/completions.
 
 Статус миграций можно проверить командой:
 
