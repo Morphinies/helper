@@ -181,7 +181,7 @@ Repository:
 
 ## BFF endpoints
 
-Route handlers для задач находятся в `src/app/api/tasks`.
+Route handlers находятся в `src/app/api/tasks` и `src/app/api/habits`.
 
 Доступные endpoints:
 
@@ -191,13 +191,20 @@ Route handlers для задач находятся в `src/app/api/tasks`.
 - `DELETE /api/tasks/{id}` - удалить задачу.
 - `POST /api/tasks/{id}/toggle` - переключить задачу между `done` и `todo`.
 - `PATCH /api/tasks/{id}/move` - изменить статус и порядок задачи.
+- `GET /api/habits?date=YYYY-MM-DD` - список привычек, видимых привычек и
+  отметок выполнения на дату.
+- `POST /api/habits` - создать привычку.
+- `PATCH /api/habits/{id}` - обновить привычку.
+- `DELETE /api/habits/{id}` - удалить привычку.
+- `POST /api/habits/{id}/completion` - переключить отметку выполнения
+  привычки на дату.
 
 Каждый endpoint:
 
 - получает пользователя через `requireCurrentUser()`;
 - возвращает `401`, если пользователь не авторизован;
 - валидирует входной JSON;
-- работает только с задачами текущего `userId`.
+- работает только с данными текущего `userId`.
 
 ## Client data
 
