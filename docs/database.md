@@ -17,14 +17,15 @@
 - Сгенерированный client не хранится в git и пересоздаётся командой
   `npm run db:generate`.
 
-Сейчас в схеме есть models для авторизации:
+Сейчас в схеме есть models для авторизации и задач:
 
 - `User`;
 - `Account`;
 - `Session`;
 - `VerificationToken`.
+- `Task`.
 
-Таблицы задач и привычек будут добавляться отдельными этапами.
+Таблицы привычек будут добавляться отдельным этапом.
 
 ## DB client
 
@@ -119,6 +120,14 @@ npm.cmd exec prisma -- db pull --print
 - создаёт таблицы `Account`, `Session`, `VerificationToken`;
 - добавляет связи `Account.userId -> User.id` и `Session.userId -> User.id`;
 - добавляет уникальные индексы, которые нужны Prisma Adapter для `next-auth`.
+
+Третья миграция:
+
+- `prisma/migrations/20260526181820_add_task_model/migration.sql`
+- создаёт enum `TaskStatus`;
+- создаёт таблицу `Task`;
+- добавляет связь `Task.userId -> User.id`;
+- добавляет индексы `Task_userId_order_idx` и `Task_userId_status_idx`.
 
 Статус миграций можно проверить командой:
 
