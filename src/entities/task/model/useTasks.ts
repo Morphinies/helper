@@ -1,4 +1,10 @@
+import { useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  requestEmpty,
+  requestJson,
+  useApiErrorNotification,
+} from "@/shared/lib/api/client";
 import type { Task, TaskFormValues } from "./types";
 
 const tasksQueryKey = ["tasks"] as const;
@@ -16,22 +22,6 @@ type MoveTaskValues = {
   status: Task["status"];
   order: Task["order"];
 };
-
-async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
-    ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...init?.headers,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
-
-  return response.json() as Promise<T>;
-}
 
 async function fetchTasks() {
   return requestJson<TasksResponse>("/api/tasks").then(({ tasks }) => tasks);
@@ -52,13 +42,9 @@ async function updateTaskRequest(id: Task["id"], values: TaskFormValues) {
 }
 
 async function deleteTaskRequest(id: Task["id"]) {
-  const response = await fetch(`/api/tasks/${id}`, {
+  return requestEmpty(`/api/tasks/${id}`, {
     method: "DELETE",
   });
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
 }
 
 async function toggleTaskDoneRequest(id: Task["id"]) {
@@ -82,7 +68,13 @@ function replaceTask(tasks: Task[] | undefined, nextTask: Task) {
 
 export function useTasks() {
   const queryClient = useQueryClient();
-  const { data: tasks = [], isLoading } = useQuery({
+  const notifyApiError = useApiErrorNotification();
+  const {
+    data: tasks = [],
+    error: tasksError,
+    isError: isTasksError,
+    isLoading,
+  } = useQuery({
     queryKey: tasksQueryKey,
     queryFn: fetchTasks,
   });
@@ -96,6 +88,7 @@ export function useTasks() {
         task,
       ]);
     },
+    onError: (error) => notifyApiError(error, "Не удалось создать задачу"),
     onSettled: invalidateTasks,
   });
   const updateTaskMutation = useMutation({
@@ -106,6 +99,7 @@ export function useTasks() {
         replaceTask(current, task),
       );
     },
+    onError: (error) => notifyApiError(error, "Не удалось обновить задачу"),
     onSettled: invalidateTasks,
   });
   const deleteTaskMutation = useMutation({
@@ -115,6 +109,7 @@ export function useTasks() {
         (current ?? []).filter((task) => task.id !== id),
       );
     },
+    onError: (error) => notifyApiError(error, "Не удалось удалить задачу"),
     onSettled: invalidateTasks,
   });
   const toggleTaskDoneMutation = useMutation({
@@ -124,6 +119,7 @@ export function useTasks() {
         replaceTask(current, task),
       );
     },
+    onError: (error) => notifyApiError(error, "Не удалось изменить задачу"),
     onSettled: invalidateTasks,
   });
   const moveTaskMutation = useMutation({
@@ -145,6 +141,7 @@ export function useTasks() {
     },
     onError: (_, __, context) => {
       queryClient.setQueryData(tasksQueryKey, context?.previousTasks);
+      notifyApiError(_, "Не удалось переместить задачу");
     },
     onSuccess: (task) => {
       queryClient.setQueryData<Task[]>(tasksQueryKey, (current) =>
@@ -153,6 +150,12 @@ export function useTasks() {
     },
     onSettled: invalidateTasks,
   });
+
+  useEffect(() => {
+    if (!isTasksError) return;
+
+    notifyApiError(tasksError, "Не удалось загрузить задачи");
+  }, [isTasksError, notifyApiError, tasksError]);
 
   const addTask = (values: TaskFormValues) => {
     addTaskMutation.mutate(values);

@@ -1,16 +1,10 @@
 import "server-only";
 
 import { getServerSession } from "next-auth";
+import { UnauthorizedError } from "./errors";
 import { authOptions } from "./options";
 
 import type { Session } from "next-auth";
-
-export class UnauthorizedError extends Error {
-  constructor() {
-    super("Unauthorized");
-    this.name = "UnauthorizedError";
-  }
-}
 
 export type AuthUser = Session["user"];
 

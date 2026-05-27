@@ -69,7 +69,7 @@ export function Login() {
           <Alert
             showIcon
             type="error"
-            message={t("invalidCredentials")}
+            title={t("invalidCredentials")}
             style={{ marginBottom: 16 }}
           />
         )}

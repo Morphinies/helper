@@ -1,7 +1,7 @@
 import "server-only";
 
 import { NextResponse } from "next/server";
-import { UnauthorizedError } from "@/shared/lib/auth/session";
+import { UnauthorizedError } from "@/shared/lib/auth/errors";
 
 export class BadRequestError extends Error {
   constructor(message = "Bad request") {

@@ -1,5 +1,10 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  requestEmpty,
+  requestJson,
+  useApiErrorNotification,
+} from "@/shared/lib/api/client";
 import type { Habit, HabitCompletion, HabitFormValues } from "./types";
 
 const habitsQueryKey = ["habits"] as const;
@@ -20,22 +25,6 @@ type HabitCompletionResponse = {
 
 function getHabitsQueryKey(selectedDate: string) {
   return [...habitsQueryKey, selectedDate] as const;
-}
-
-async function requestJson<T>(url: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
-    ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...init?.headers,
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
-
-  return response.json() as Promise<T>;
 }
 
 async function fetchHabits(selectedDate: string) {
@@ -59,13 +48,9 @@ async function updateHabitRequest(id: Habit["id"], values: HabitFormValues) {
 }
 
 async function deleteHabitRequest(id: Habit["id"]) {
-  const response = await fetch(`/api/habits/${id}`, {
+  return requestEmpty(`/api/habits/${id}`, {
     method: "DELETE",
   });
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
 }
 
 async function toggleHabitCompletionRequest({
@@ -110,6 +95,7 @@ function updateCompletion(
 
 export function useHabits(selectedDate: string) {
   const queryClient = useQueryClient();
+  const notifyApiError = useApiErrorNotification();
   const queryKey = getHabitsQueryKey(selectedDate);
   const {
     data = {
@@ -117,6 +103,8 @@ export function useHabits(selectedDate: string) {
       visibleHabits: [],
       completions: [],
     },
+    error: habitsError,
+    isError: isHabitsError,
     isLoading,
   } = useQuery({
     queryKey,
@@ -134,6 +122,7 @@ export function useHabits(selectedDate: string) {
         completions: current?.completions ?? [],
       }));
     },
+    onError: (error) => notifyApiError(error, "Не удалось создать привычку"),
     onSettled: invalidateHabits,
   });
   const updateHabitMutation = useMutation({
@@ -151,6 +140,7 @@ export function useHabits(selectedDate: string) {
         completions: current?.completions ?? [],
       }));
     },
+    onError: (error) => notifyApiError(error, "Не удалось обновить привычку"),
     onSettled: invalidateHabits,
   });
   const deleteHabitMutation = useMutation({
@@ -166,6 +156,7 @@ export function useHabits(selectedDate: string) {
         ),
       }));
     },
+    onError: (error) => notifyApiError(error, "Не удалось удалить привычку"),
     onSettled: invalidateHabits,
   });
   const toggleCompletionMutation = useMutation({
@@ -177,8 +168,16 @@ export function useHabits(selectedDate: string) {
         completions: updateCompletion(current?.completions, completion),
       }));
     },
+    onError: (error) =>
+      notifyApiError(error, "Не удалось изменить отметку привычки"),
     onSettled: invalidateHabits,
   });
+
+  useEffect(() => {
+    if (!isHabitsError) return;
+
+    notifyApiError(habitsError, "Не удалось загрузить привычки");
+  }, [habitsError, isHabitsError, notifyApiError]);
 
   const completedHabitIds = useMemo(() => {
     return new Set(
