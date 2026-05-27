@@ -23,6 +23,7 @@
 - `Account`;
 - `Session`;
 - `VerificationToken`.
+- `RegistrationVerification`;
 - `Task`.
 - `Habit`;
 - `HabitCompletion`.
@@ -139,6 +140,14 @@ npm.cmd exec prisma -- db pull --print
   `HabitCompletion.userId -> User.id`;
 - добавляет уникальность `HabitCompletion_habitId_date_key`;
 - добавляет индексы по пользователю и датам привычек/completions.
+
+Пятая миграция:
+
+- `prisma/migrations/20260527182933_add_email_registration/migration.sql`
+- добавляет поле `User.passwordHash`;
+- создаёт таблицу `RegistrationVerification`;
+- добавляет уникальность `RegistrationVerification_email_key`;
+- добавляет индекс `RegistrationVerification_expiresAt_idx`.
 
 Статус миграций можно проверить командой:
 

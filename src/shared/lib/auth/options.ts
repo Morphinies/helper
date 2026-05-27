@@ -2,6 +2,7 @@ import VkProvider from "next-auth/providers/vk";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/shared/lib/db";
+import { verifySecret } from "./password";
 import type { NextAuthOptions } from "next-auth";
 
 const localAuthLogin = process.env.LOCAL_AUTH_LOGIN || "admin";
@@ -36,29 +37,51 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        const login = credentials?.login?.trim().toLowerCase();
+        const password = credentials?.password;
         const localAuthEnabled =
           process.env.NODE_ENV === "development" ||
           !!process.env.LOCAL_AUTH_ENABLED;
 
-        if (!localAuthEnabled) return null;
-        if (credentials?.login !== localAuthLogin) return null;
-        if (credentials?.password !== localAuthPassword) return null;
+        if (!login || !password) return null;
 
-        const user = await prisma.user.upsert({
-          where: { email: localAuthEmail },
-          update: { name: localAuthName },
-          create: {
-            name: localAuthName,
-            email: localAuthEmail,
-          },
+        const registeredUser = await prisma.user.findUnique({
+          where: { email: login },
         });
 
-        return {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          image: user.image,
-        };
+        if (
+          registeredUser?.passwordHash &&
+          verifySecret(password, registeredUser.passwordHash)
+        ) {
+          return {
+            id: registeredUser.id,
+            name: registeredUser.name,
+            email: registeredUser.email,
+            image: registeredUser.image,
+          };
+        }
+
+        if (localAuthEnabled && login === localAuthLogin) {
+          if (password !== localAuthPassword) return null;
+
+          const user = await prisma.user.upsert({
+            where: { email: localAuthEmail },
+            update: { name: localAuthName },
+            create: {
+              name: localAuthName,
+              email: localAuthEmail,
+            },
+          });
+
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            image: user.image,
+          };
+        }
+
+        return null;
       },
     }),
     VkProvider({

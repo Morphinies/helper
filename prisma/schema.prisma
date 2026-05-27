@@ -27,6 +27,7 @@ model User {
   id            String            @id @default(cuid())
   name          String?
   email         String?           @unique
+  passwordHash  String?
   emailVerified DateTime?
   image         String?
   createdAt     DateTime          @default(now())
@@ -36,6 +37,19 @@ model User {
   tasks         Task[]
   habits        Habit[]
   completions   HabitCompletion[]
+}
+
+model RegistrationVerification {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  codeHash     String
+  attempts     Int      @default(0)
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([expiresAt])
 }
 
 model Account {
